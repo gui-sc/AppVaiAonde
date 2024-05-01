@@ -80,4 +80,19 @@ public class GastoHospedagemModel {
     public void setUtilizado(int utilizado) {
         this.utilizado = utilizado;
     }
+
+    public String toString(){
+        return "tabela: " + TABELA_NOME
+                + "id: " + this.id
+                + "viagem_id: " + this.viagem_id
+                + "custo_noite: " + this.custo_noite
+                + "noites: " + this.noites
+                + "quartos: " + this.quartos
+                + "utilizado: " + this.utilizado;
+    }
+
+    public double calcularGastoHospedagem(){
+        return (this.custo_noite * this.noites) * this.quartos;
+    }
+
 }

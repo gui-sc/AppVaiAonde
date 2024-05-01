@@ -78,4 +78,8 @@ public class GastoRefeicoesModel {
                 + "refeicoes por dia: " + this.refeicoes_dia
                 + "utilizado: " + this.utilizado;
     }
+
+    public double calcularCustoTotalRefeicoes(int refeicoesDia, int totalViajantes, double custoEstimado, int duracaoViagem) {
+        return ((refeicoesDia * totalViajantes) * custoEstimado) * duracaoViagem;
+    }
 }

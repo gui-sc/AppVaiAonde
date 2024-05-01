@@ -102,4 +102,8 @@ public class GastoGasolinaModel {
                 "utilizado: " + this.utilizado +
                 "viagem_id: " + this.viagem_id;
     }
+
+    public double calcularCustoTotal() {
+        return (this.km / this.km_litro) * this.custo_litro;
+    }
 }

@@ -1,5 +1,7 @@
 package com.example.vaiaonde.model;
 
+import com.example.vaiaonde.model.ViagensModel;
+
 public class GastoAereoModel {
     public static final String TABELA_NOME = "tb_gasto_aereo";
     public static final String
@@ -28,6 +30,7 @@ public class GastoAereoModel {
     private double custo_pessoa;
     private double aluguel_veiculo;
     private int utilizado;
+    private ViagensModel viagem;
 
     public long getId() {
         return id;
@@ -69,6 +72,14 @@ public class GastoAereoModel {
         this.utilizado = utilizado;
     }
 
+    public ViagensModel getViagem() {
+        return viagem;
+    }
+
+    public void setViagem(ViagensModel viagem) {
+        this.viagem = viagem;
+    }
+
     @Override
     public String toString() {
         return "tabela: " + this.TABELA_NOME +
@@ -78,4 +89,10 @@ public class GastoAereoModel {
                 "aluguel de veiculo: " + this.aluguel_veiculo +
                 "utilizado: " + this.utilizado;
     }
+
+    public double calcularCustoTotal() {
+        return (this.custo_pessoa * this.viagem.pessoas) + this.aluguel_veiculo;
+    }
+
 }
+
