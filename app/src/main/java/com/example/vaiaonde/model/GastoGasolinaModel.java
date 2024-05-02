@@ -34,7 +34,7 @@ public class GastoGasolinaModel {
     private double custo_litro;
     private int total_veiculos;
     private int utilizado;
-    private long viagem_id;
+    private ViagensModel viagem;
 
     public long getId() {
         return id;
@@ -84,12 +84,12 @@ public class GastoGasolinaModel {
         this.utilizado = utilizado;
     }
 
-    public long getViagem_id() {
-        return viagem_id;
+    public ViagensModel getViagem() {
+        return viagem;
     }
 
-    public void setViagem_id(long viagem_id) {
-        this.viagem_id = viagem_id;
+    public void setViagem(ViagensModel viagem_id) {
+        this.viagem = viagem_id;
     }
 
     public String toString() {
@@ -100,10 +100,10 @@ public class GastoGasolinaModel {
                 "custo do litro: " + this.custo_litro +
                 "total de veiculos: " + this.total_veiculos +
                 "utilizado: " + this.utilizado +
-                "viagem_id: " + this.viagem_id;
+                "viagem_id: " + this.viagem.getId();
     }
 
     public double calcularCustoTotal() {
-        return (this.km / this.km_litro) * this.custo_litro;
+        return (Double.parseDouble(String.valueOf(this.km)) / Double.parseDouble(String.valueOf(this.km_litro))) * this.custo_litro * this.total_veiculos;
     }
 }

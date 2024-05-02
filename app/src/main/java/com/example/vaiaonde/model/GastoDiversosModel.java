@@ -25,7 +25,7 @@ public class GastoDiversosModel {
             "DROP TABLE IF EXISTS " + TABELA_NOME;
 
     private long id;
-    private long viagem_id;
+    private ViagensModel viagem;
     private String descricao;
     private double valor;
     private int utilizado;
@@ -38,12 +38,12 @@ public class GastoDiversosModel {
         this.id = id;
     }
 
-    public long getViagem_id() {
-        return viagem_id;
+    public ViagensModel getViagem() {
+        return viagem;
     }
 
-    public void setViagem_id(long viagem_id) {
-        this.viagem_id = viagem_id;
+    public void setViagem(ViagensModel viagem_id) {
+        this.viagem = viagem_id;
     }
 
     public String getDescricao() {
@@ -74,7 +74,7 @@ public class GastoDiversosModel {
     public String toString(){
         return "tabela: " + TABELA_NOME
                 + "id: " + this.id
-                + "viagem_id: " + this.viagem_id
+                + "viagem_id: " + this.viagem.getId()
                 + "descricao: " + this.descricao
                 + "valor: " + this.valor
                 + "utilizado: " + this.utilizado;

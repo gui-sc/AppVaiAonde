@@ -48,7 +48,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="30"
-            android:text="@string/_0"
+            android:hint="@string/_0"
             android:textAlignment="center"
             android:inputType="numberDecimal"/>
 
@@ -68,11 +68,11 @@
             android:textColor="@color/text"
             android:text="@string/refeicoes_por_dia"/>
         <EditText
-            android:id="@+id/txt"
+            android:id="@+id/txtRefeicoes"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="30"
-            android:text="@string/_0"
+            android:hint="@string/_0"
             android:textAlignment="center"
             android:inputType="number"/>
 

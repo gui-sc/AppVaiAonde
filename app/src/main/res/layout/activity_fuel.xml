@@ -39,7 +39,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="30"
-            android:text="@string/_0"
+            android:hint="@string/_0"
             android:textAlignment="center"
             android:inputType="number"/>
 
@@ -64,7 +64,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="30"
-            android:text="@string/_0"
+            android:hint="@string/_0"
             android:textAlignment="center"
             android:inputType="number"/>
 
@@ -98,7 +98,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="30"
-            android:text="@string/_0"
+            android:hint="@string/_0"
             android:textAlignment="center"
             android:inputType="numberDecimal"/>
 
@@ -121,7 +121,7 @@
         <EditText
             android:id="@+id/txtTotalVeiculos"
             android:layout_width="0dp"
-            android:text="@string/_0"
+            android:hint="@string/_0"
             android:textAlignment="center"
             android:layout_height="wrap_content"
             android:layout_weight="30"
@@ -155,7 +155,7 @@
         <TextView
             android:id="@+id/txtTotal"
             android:layout_width="0dp"
-            android:text="@string/_0"
+            android:hint="@string/_0"
             android:textAlignment="center"
             android:textSize="20sp"
             android:textColor="@color/text"

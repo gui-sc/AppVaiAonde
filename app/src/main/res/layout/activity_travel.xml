@@ -103,6 +103,17 @@
             android:text="@string/outros_gastos"/>
 
         <Button
+            android:id="@+id/btnApagar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text"
+            android:textSize="25sp"
+            android:fontFamily="@string/font"
+            android:backgroundTint="@color/danger"
+            android:layout_marginBottom="15dp"
+            android:text="@string/apagar_viagem"/>
+
+        <Button
             android:id="@+id/btnVoltar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

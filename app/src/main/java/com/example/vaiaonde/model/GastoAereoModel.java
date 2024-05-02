@@ -26,7 +26,6 @@ public class GastoAereoModel {
             "DROP TABLE IF EXISTS " + TABELA_NOME;
 
     private long id;
-    private long viagem_id;
     private double custo_pessoa;
     private double aluguel_veiculo;
     private int utilizado;
@@ -38,14 +37,6 @@ public class GastoAereoModel {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getViagem_id() {
-        return viagem_id;
-    }
-
-    public void setViagem_id(long viagem_id) {
-        this.viagem_id = viagem_id;
     }
 
     public double getCusto_pessoa() {
@@ -84,14 +75,14 @@ public class GastoAereoModel {
     public String toString() {
         return "tabela: " + this.TABELA_NOME +
                 "id: " + this.id +
-                "viagem_id: " + this.viagem_id +
+                "viagem_id: " + this.viagem.getId() +
                 "custo por pessoa: " + this.custo_pessoa +
                 "aluguel de veiculo: " + this.aluguel_veiculo +
                 "utilizado: " + this.utilizado;
     }
 
     public double calcularCustoTotal() {
-        return (this.custo_pessoa * this.viagem.pessoas) + this.aluguel_veiculo;
+        return (this.custo_pessoa * this.viagem.getPessoas()) + this.aluguel_veiculo;
     }
 
 }

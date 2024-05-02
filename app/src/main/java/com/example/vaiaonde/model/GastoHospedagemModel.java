@@ -27,7 +27,7 @@ public class GastoHospedagemModel {
             "DROP TABLE IF EXISTS " + TABELA_NOME;
 
     private long id;
-    private long viagem_id;
+    private ViagensModel viagem;
     private double custo_noite;
     private int noites;
     private int quartos;
@@ -41,12 +41,12 @@ public class GastoHospedagemModel {
         this.id = id;
     }
 
-    public long getViagem_id() {
-        return viagem_id;
+    public ViagensModel getViagem() {
+        return viagem;
     }
 
-    public void setViagem_id(long viagem_id) {
-        this.viagem_id = viagem_id;
+    public void setViagem_id(ViagensModel viagem_id) {
+        this.viagem = viagem_id;
     }
 
     public double getCusto_noite() {
@@ -84,7 +84,7 @@ public class GastoHospedagemModel {
     public String toString(){
         return "tabela: " + TABELA_NOME
                 + "id: " + this.id
-                + "viagem_id: " + this.viagem_id
+                + "viagem_id: " + this.viagem.getId()
                 + "custo_noite: " + this.custo_noite
                 + "noites: " + this.noites
                 + "quartos: " + this.quartos

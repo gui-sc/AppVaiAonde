@@ -40,4 +40,5 @@
     <string name="custo_por_noite">Custo por noite</string>
     <string name="total_de_noites">Total de noites</string>
     <string name="total_de_quartos">Total de quartos</string>
+    <string name="apagar_viagem">Apagar Viagem</string>
 </resources>

@@ -31,7 +31,7 @@ public class ViagensModel {
     private int pessoas;
     private String destino;
     private int ativa;
-    private long usuario_id;
+    private UsuariosModel usuario;
 
     public long getId() {
         return id;
@@ -73,12 +73,12 @@ public class ViagensModel {
         this.ativa = ativa;
     }
 
-    public long getUsuario_id() {
-        return usuario_id;
+    public UsuariosModel getUsuario() {
+        return usuario;
     }
 
-    public void setUsuario_id(long usuario_id) {
-        this.usuario_id = usuario_id;
+    public void setUsuario(UsuariosModel usuario_id) {
+        this.usuario = usuario_id;
     }
 
     @Override
@@ -89,7 +89,7 @@ public class ViagensModel {
                 "pessoas: " + this.pessoas +
                 "destino: " + this.destino +
                 "ativa: " + this.ativa +
-                "usuario_id: " + this.usuario_id;
+                "usuario_id: " + this.usuario.getId();
     }
 
 }

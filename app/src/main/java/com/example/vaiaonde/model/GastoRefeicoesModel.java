@@ -24,7 +24,7 @@ public class GastoRefeicoesModel {
             "DROP TABLE IF EXISTS " + TABELA_NOME;
 
     private long id;
-    private long viagem_id;
+    private ViagensModel viagem;
     private double custo_refeicao;
     private int refeicoes_dia;
     private int utilizado;
@@ -37,12 +37,12 @@ public class GastoRefeicoesModel {
         this.id = id;
     }
 
-    public long getViagem_id() {
-        return viagem_id;
+    public ViagensModel getViagem() {
+        return viagem;
     }
 
-    public void setViagem_id(long viagem_id) {
-        this.viagem_id = viagem_id;
+    public void setViagem_id(ViagensModel viagem) {
+        this.viagem = viagem;
     }
 
     public double getCusto_refeicao() {
@@ -73,13 +73,17 @@ public class GastoRefeicoesModel {
     public String toString() {
         return "tabela: " + TABELA_NOME
                 + "id: " + this.id
-                + "viagem_id: " + this.viagem_id
+                + "viagem_id: " + this.viagem.getId()
                 + "custo por refeicao: " + this.custo_refeicao
                 + "refeicoes por dia: " + this.refeicoes_dia
                 + "utilizado: " + this.utilizado;
     }
 
-    public double calcularCustoTotalRefeicoes(int refeicoesDia, int totalViajantes, double custoEstimado, int duracaoViagem) {
-        return ((refeicoesDia * totalViajantes) * custoEstimado) * duracaoViagem;
+    public double calcularParcial(){
+        return this.refeicoes_dia * this.custo_refeicao;
+    }
+
+    public double calcularCustoTotalRefeicoes() {
+        return ((this.refeicoes_dia * this.viagem.getPessoas()) * this.custo_refeicao) * this.viagem.getDias();
     }
 }
