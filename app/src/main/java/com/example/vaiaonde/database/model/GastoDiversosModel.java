@@ -1,4 +1,4 @@
-package com.example.vaiaonde.model;
+package com.example.vaiaonde.database.model;
 
 public class GastoDiversosModel {
 
@@ -11,7 +11,7 @@ public class GastoDiversosModel {
             COLUNA_UTILIZADO = "utilizado";
 
     public static final String CREATE_TABLE =
-            "CREATE TABLE " + TABELA_NOME +
+            "CREATE TABLE IF NOT EXISTS " + TABELA_NOME +
                     " ( "
                     + COLUNA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + COLUNA_VIAGEM_ID + " INTEGER NOT NULL, "

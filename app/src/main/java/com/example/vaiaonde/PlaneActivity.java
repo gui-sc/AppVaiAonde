@@ -7,7 +7,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.vaiaonde.model.ViagensModel;
+import com.example.vaiaonde.database.model.ViagensModel;
 
 public class PlaneActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.example.vaiaonde.model;
+package com.example.vaiaonde.database.model;
 
 public class GastoHospedagemModel {
 
@@ -45,7 +45,7 @@ public class GastoHospedagemModel {
         return viagem;
     }
 
-    public void setViagem_id(ViagensModel viagem_id) {
+    public void setViagem(ViagensModel viagem_id) {
         this.viagem = viagem_id;
     }
 

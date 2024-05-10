@@ -5,8 +5,6 @@ import static androidx.core.content.ContextCompat.startActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -14,7 +12,7 @@ import android.widget.TextView;
 
 import com.example.vaiaonde.R;
 import com.example.vaiaonde.TravelActivity;
-import com.example.vaiaonde.model.ViagensModel;
+import com.example.vaiaonde.database.model.ViagensModel;
 
 import java.util.ArrayList;
 

@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity"
+    tools:context=".RegisterActivity"
     android:orientation="vertical"
     android:background="@color/background"
     android:gravity="center">
@@ -21,7 +21,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/login"
+            android:text="@string/cadastro"
             android:fontFamily="@string/font"
             android:textColor="@color/black"
             android:textSize="30sp"
@@ -42,6 +42,7 @@
             android:textColor="@color/black"
             android:layout_marginStart="15dp"
             android:textSize="20sp"/>
+
         <EditText
             android:id="@+id/txtEmail"
             android:layout_width="match_parent"
@@ -85,20 +86,20 @@
             />
 
         <Button
-            android:id="@+id/btnEntrar"
+            android:id="@+id/btnCadastrar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="25dp"
             android:backgroundTint="@color/primary"
-            android:text="@string/entrar"
+            android:text="@string/cadastrar"
             android:fontFamily="@string/font"
             android:layout_marginBottom="10dp"/>
 
         <TextView
-            android:id="@+id/btnCadastro"
+            android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/loginMsg"
+            android:text="@string/cadastroMsg"
             android:textColor="@color/black"
             android:textSize="15sp"
             android:fontFamily="@string/font"

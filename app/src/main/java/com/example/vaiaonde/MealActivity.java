@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,8 +11,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.vaiaonde.model.GastoRefeicoesModel;
-import com.example.vaiaonde.model.ViagensModel;
+import com.example.vaiaonde.database.model.GastoRefeicoesModel;
+import com.example.vaiaonde.database.model.ViagensModel;
 
 public class MealActivity extends AppCompatActivity {
 
@@ -38,7 +37,7 @@ public class MealActivity extends AppCompatActivity {
         GastoRefeicoesModel gasto = new GastoRefeicoesModel();
         gasto.setRefeicoes_dia(0);
         gasto.setCusto_refeicao(0);
-        gasto.setViagem_id(viagem);
+        gasto.setViagem(viagem);
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

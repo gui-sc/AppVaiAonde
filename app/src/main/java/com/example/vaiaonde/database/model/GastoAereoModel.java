@@ -1,6 +1,4 @@
-package com.example.vaiaonde.model;
-
-import com.example.vaiaonde.model.ViagensModel;
+package com.example.vaiaonde.database.model;
 
 public class GastoAereoModel {
     public static final String TABELA_NOME = "tb_gasto_aereo";
@@ -12,7 +10,7 @@ public class GastoAereoModel {
         COLUNA_UTILIZADO = "utilizado";
 
     public static final String CREATE_TABLE =
-            "CREATE TABLE " + TABELA_NOME +
+            "CREATE TABLE IF NOT EXISTS " + TABELA_NOME +
                     " ( "
                     + COLUNA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + COLUNA_CUSTO_PESSOA + " REAL NOT NULL, "

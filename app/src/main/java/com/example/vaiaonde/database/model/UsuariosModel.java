@@ -1,4 +1,4 @@
-package com.example.vaiaonde.model;
+package com.example.vaiaonde.database.model;
 
 import androidx.annotation.NonNull;
 
@@ -11,7 +11,7 @@ public class UsuariosModel {
         COLUNA_SENHA = "senha";
 
     public static final String CREATE_TABLE =
-            "CREATE TABLE " + TABELA_NOME +
+            "CREATE TABLE IF NOT EXISTS " + TABELA_NOME +
                     " ( "
                     + COLUNA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + COLUNA_EMAIL + " TEXT NOT NULL, "

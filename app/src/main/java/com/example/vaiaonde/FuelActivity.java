@@ -9,14 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.example.vaiaonde.model.GastoGasolinaModel;
-import com.example.vaiaonde.model.ViagensModel;
+import com.example.vaiaonde.database.model.GastoGasolinaModel;
+import com.example.vaiaonde.database.model.ViagensModel;
 
 public class FuelActivity extends AppCompatActivity {
 

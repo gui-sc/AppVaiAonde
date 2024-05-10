@@ -41,4 +41,7 @@
     <string name="total_de_noites">Total de noites</string>
     <string name="total_de_quartos">Total de quartos</string>
     <string name="apagar_viagem">Apagar Viagem</string>
+    <string name="cadastro">Cadastro</string>
+    <string name="cadastrar">CADASTRAR</string>
+    <string name="cadastroMsg">Já possui uma conta?\nEfetue Login</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.vaiaonde.model;
+package com.example.vaiaonde.database.model;
 
 public class ViagensModel {
 
@@ -12,7 +12,7 @@ public class ViagensModel {
         COLUNA_USUARIO_ID = "usuario_id";
 
     public static final String CREATE_TABLE =
-            "CREATE TABLE " + TABELA_NOME +
+            "CREATE TABLE IF NOT EXISTS " + TABELA_NOME +
                     " ( "
                     + COLUNA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + COLUNA_DIAS + " INTEGER NOT NULL, "
@@ -30,7 +30,7 @@ public class ViagensModel {
     private int dias;
     private int pessoas;
     private String destino;
-    private int ativa;
+    private boolean ativa;
     private UsuariosModel usuario;
 
     public long getId() {
@@ -65,11 +65,11 @@ public class ViagensModel {
         this.destino = destino;
     }
 
-    public int getAtiva() {
+    public boolean getAtiva() {
         return ativa;
     }
 
-    public void setAtiva(int ativa) {
+    public void setAtiva(boolean ativa) {
         this.ativa = ativa;
     }
 

@@ -1,4 +1,4 @@
-package com.example.vaiaonde.model;
+package com.example.vaiaonde.database.model;
 
 public class GastoRefeicoesModel {
     public static final String TABELA_NOME = "tb_gasto_refeicoes";
@@ -10,7 +10,7 @@ public class GastoRefeicoesModel {
             COLUNA_UTILIZADO = "utilizado";
 
     public static final String CREATE_TABLE =
-            "CREATE TABLE " + TABELA_NOME +
+            "CREATE TABLE IF NOT EXISTS " + TABELA_NOME +
                     " ( "
                     + COLUNA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + COLUNA_VIAGEM_ID + " INTEGER NOT NULL, "
@@ -41,7 +41,7 @@ public class GastoRefeicoesModel {
         return viagem;
     }
 
-    public void setViagem_id(ViagensModel viagem) {
+    public void setViagem(ViagensModel viagem) {
         this.viagem = viagem;
     }
 
