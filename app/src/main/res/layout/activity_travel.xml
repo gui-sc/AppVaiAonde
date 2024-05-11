@@ -1,127 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context=".TravelActivity"
-    android:orientation="vertical"
-    android:background="@color/background"
-    android:padding="40dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/background"
+        android:padding="40dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/destino"
+                android:textSize="30sp"
+                android:fontFamily="@string/font"
+                android:textColor="@color/text"
+                android:layout_marginEnd="10dp"/>
+            <TextView
+                android:id="@+id/txtDestino"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="30sp"
+                android:fontFamily="@string/font"
+                android:textColor="@color/text"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/destino"
-            android:textSize="30sp"
-            android:fontFamily="@string/font"
-            android:textColor="@color/text"
-            android:layout_marginEnd="10dp"/>
-        <TextView
-            android:id="@+id/txtDestino"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textSize="30sp"
-            android:fontFamily="@string/font"
-            android:textColor="@color/text"/>
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnEncerrar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text"
+                android:textSize="25sp"
+                android:fontFamily="@string/font"
+                android:backgroundTint="@color/primary"
+                android:layout_marginBottom="10dp"
+                android:text="@string/encerrar_viagem"/>
+
+            <Button
+                android:id="@+id/btnResumo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text"
+                android:textSize="25sp"
+                android:fontFamily="@string/font"
+                android:backgroundTint="@color/primary"
+                android:layout_marginBottom="10dp"
+                android:text="@string/resumo"/>
+
+            <Button
+                android:id="@+id/btnEditarViagem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text"
+                android:textSize="25sp"
+                android:fontFamily="@string/font"
+                android:backgroundTint="@color/primary"
+                android:layout_marginBottom="10dp"
+                android:text="@string/editar_viagem"/>
+            <Button
+                android:id="@+id/btnRefeicao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text"
+                android:textSize="25sp"
+                android:fontFamily="@string/font"
+                android:backgroundTint="@color/primary"
+                android:layout_marginBottom="10dp"
+                android:text="@string/gastos_com_refeicoes"/>
+
+            <Button
+                android:id="@+id/btnHospedagem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text"
+                android:textSize="25sp"
+                android:fontFamily="@string/font"
+                android:backgroundTint="@color/primary"
+                android:layout_marginBottom="10dp"
+                android:text="@string/gastos_com_hospedagem"/>
+
+            <Button
+                android:id="@+id/btnGasolina"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text"
+                android:textSize="25sp"
+                android:fontFamily="@string/font"
+                android:backgroundTint="@color/primary"
+                android:layout_marginBottom="10dp"
+                android:text="@string/gastos_com_gasolina"/>
+
+            <Button
+                android:id="@+id/btnAerea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text"
+                android:textSize="25sp"
+                android:fontFamily="@string/font"
+                android:backgroundTint="@color/primary"
+                android:layout_marginBottom="10dp"
+                android:text="@string/gastos_com_aviao"/>
+
+            <Button
+                android:id="@+id/btnOutros"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text"
+                android:textSize="25sp"
+                android:fontFamily="@string/font"
+                android:backgroundTint="@color/primary"
+                android:layout_marginBottom="10dp"
+                android:text="@string/outros_gastos"/>
+
+            <Button
+                android:id="@+id/btnApagar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text"
+                android:textSize="25sp"
+                android:fontFamily="@string/font"
+                android:backgroundTint="@color/danger"
+                android:layout_marginBottom="15dp"
+                android:text="@string/apagar_viagem"/>
+
+            <Button
+                android:id="@+id/btnVoltar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text"
+                android:textSize="25sp"
+                android:fontFamily="@string/font"
+                android:backgroundTint="@color/primary"
+                android:text="@string/voltar"/>
+        </LinearLayout>
+
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/btnEncerrar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text"
-            android:textSize="25sp"
-            android:fontFamily="@string/font"
-            android:backgroundTint="@color/primary"
-            android:layout_marginBottom="15dp"
-            android:text="@string/encerrar_viagem"/>
-
-        <Button
-            android:id="@+id/btnRefeicao"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text"
-            android:textSize="25sp"
-            android:fontFamily="@string/font"
-            android:backgroundTint="@color/primary"
-            android:layout_marginBottom="15dp"
-            android:text="@string/gastos_com_refeicoes"/>
-
-        <Button
-            android:id="@+id/btnHospedagem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text"
-            android:textSize="25sp"
-            android:fontFamily="@string/font"
-            android:backgroundTint="@color/primary"
-            android:layout_marginBottom="15dp"
-            android:text="@string/gastos_com_hospedagem"/>
-
-        <Button
-            android:id="@+id/btnGasolina"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text"
-            android:textSize="25sp"
-            android:fontFamily="@string/font"
-            android:backgroundTint="@color/primary"
-            android:layout_marginBottom="15dp"
-            android:text="@string/gastos_com_gasolina"/>
-
-        <Button
-            android:id="@+id/btnAerea"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text"
-            android:textSize="25sp"
-            android:fontFamily="@string/font"
-            android:backgroundTint="@color/primary"
-            android:layout_marginBottom="15dp"
-            android:text="@string/gastos_com_aviao"/>
-
-        <Button
-            android:id="@+id/btnOutros"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text"
-            android:textSize="25sp"
-            android:fontFamily="@string/font"
-            android:backgroundTint="@color/primary"
-            android:layout_marginBottom="15dp"
-            android:text="@string/outros_gastos"/>
-
-        <Button
-            android:id="@+id/btnApagar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text"
-            android:textSize="25sp"
-            android:fontFamily="@string/font"
-            android:backgroundTint="@color/danger"
-            android:layout_marginBottom="15dp"
-            android:text="@string/apagar_viagem"/>
-
-        <Button
-            android:id="@+id/btnVoltar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text"
-            android:textSize="25sp"
-            android:fontFamily="@string/font"
-            android:backgroundTint="@color/primary"
-            android:text="@string/voltar"/>
-    </LinearLayout>
-
-</LinearLayout>
+</ScrollView>

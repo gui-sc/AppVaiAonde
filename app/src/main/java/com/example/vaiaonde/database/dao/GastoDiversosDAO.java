@@ -6,6 +6,7 @@ import android.database.Cursor;
 
 import com.example.vaiaonde.database.DBOpenHelper;
 import com.example.vaiaonde.database.model.GastoDiversosModel;
+import com.example.vaiaonde.database.model.ViagensModel;
 
 import java.util.ArrayList;
 
@@ -97,18 +98,17 @@ public class GastoDiversosDAO extends AbstrataDao {
         return linhasAfetadas;
     }
 
-    public ArrayList<GastoDiversosModel> SelectAll() {
+    public ArrayList<GastoDiversosModel> SelectAll(ViagensModel viagem) {
 
         ArrayList<GastoDiversosModel> lista = new ArrayList<>();
-        GastoDiversosModel gastoDiversos = new GastoDiversosModel();
 
         try {
             Open();
             Cursor cursor = db.query(
                     GastoDiversosModel.TABELA_NOME,
                     colunas,
-                    null,
-                    null,
+                    GastoDiversosModel.COLUNA_VIAGEM_ID + " = ?",
+                    new String[]{String.valueOf(viagem.getId())},
                     null,
                     null,
                     null
@@ -117,6 +117,7 @@ public class GastoDiversosDAO extends AbstrataDao {
             if (cursor.moveToFirst()) {
 
                 while (!cursor.isAfterLast()) {
+                    GastoDiversosModel gastoDiversos = new GastoDiversosModel();
                     gastoDiversos.setId(cursor.getLong(0));
                     gastoDiversos.setViagem(new ViagensDAO(context).selectById(cursor.getLong(1)));
                     gastoDiversos.setDescricao(cursor.getString(2));

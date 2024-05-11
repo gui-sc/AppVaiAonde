@@ -55,7 +55,7 @@ public class TravelAdapter extends BaseAdapter {
         }
 
         ViagensModel travel = travelList.get(position);
-
+        System.out.println("testelog");
         TextView destino = convertView.findViewById(R.id.itemText);
         destino.setText(travel.getDestino());
         convertView.setOnClickListener(new View.OnClickListener() {

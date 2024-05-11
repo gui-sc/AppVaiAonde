@@ -45,4 +45,11 @@
     <string name="cadastrar">CADASTRAR</string>
     <string name="cadastroMsg">Já possui uma conta?\nEfetue Login</string>
     <string name="sair">Sair</string>
+    <string name="descricao">Descrição</string>
+    <string name="montanha_russa">Montanha Russa</string>
+    <string name="apagar">Apagar</string>
+    <string name="limpar">Limpar</string>
+    <string name="gastos">Gastos</string>
+    <string name="resumo">Resumo</string>
+    <string name="editar_viagem">Editar Viagem</string>
 </resources>

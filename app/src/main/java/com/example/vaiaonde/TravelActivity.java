@@ -10,13 +10,18 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.vaiaonde.database.dao.ViagensDAO;
+import com.example.vaiaonde.database.model.GastoAereoModel;
+import com.example.vaiaonde.database.model.GastoDiversosModel;
 import com.example.vaiaonde.database.model.ViagensModel;
+
+import java.util.function.Function;
 
 public class TravelActivity extends AppCompatActivity {
 
     private TextView txtDestino;
     private Button btnEncerrar, btnRefeicao, btnHospedagem, btnGasolina,
             btnAviao, btnOutros, btnApagar, btnVoltar;
+    private GastoDiversosModel selectedGasto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +46,6 @@ public class TravelActivity extends AppCompatActivity {
         }
         ViagensModel viagem = new ViagensDAO(TravelActivity.this).selectById(id);
         if(viagem == null){
-            startActivity(new Intent(TravelActivity.this, MainActivity.class));
-            return;
-        } else if(!viagem.getAtiva()){
-            System.out.println(viagem.getId());
-            System.out.println(viagem.getAtiva());
-            Toast.makeText(this, "Viagem já encerrada!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(TravelActivity.this, MainActivity.class));
             return;
         }
@@ -94,7 +93,9 @@ public class TravelActivity extends AppCompatActivity {
         btnOutros.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(TravelActivity.this, "Função não implementada!", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(TravelActivity.this, OtherActivity.class);
+                intent.putExtra("travel", viagem.getId());
+                startActivity(intent);
             }
         });
 
@@ -104,6 +105,19 @@ public class TravelActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(TravelActivity.this, MainActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        btnApagar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                long id = new ViagensDAO(TravelActivity.this).Delete(viagem);
+                if(id == -1){
+                    Toast.makeText(TravelActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(TravelActivity.this, "Viagem apagada!", Toast.LENGTH_SHORT).show();
+                }
+                startActivity(new Intent(TravelActivity.this, MainActivity.class));
             }
         });
 

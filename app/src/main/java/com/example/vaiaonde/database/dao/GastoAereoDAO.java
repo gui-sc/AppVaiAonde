@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.example.vaiaonde.database.DBOpenHelper;
 import com.example.vaiaonde.database.model.GastoAereoModel;
+import com.example.vaiaonde.database.model.ViagensModel;
 
 import java.util.ArrayList;
 
@@ -98,6 +99,42 @@ public class GastoAereoDAO extends AbstrataDao {
         }
 
         return linhasAfetadas;
+    }
+
+    public GastoAereoModel SelectByViagem(ViagensModel viagem){
+        GastoAereoModel gasto = new GastoAereoModel();
+        gasto.setViagem(viagem);
+        gasto.setId(0);
+        gasto.setAluguel_veiculo(0);
+        gasto.setCusto_pessoa(0);
+        try {
+            Open();
+
+            Cursor cursor = db.query(
+                    GastoAereoModel.TABELA_NOME,
+                    colunas,
+                    GastoAereoModel.COLUNA_VIAGEM_ID  + " = ?",
+                    new String[]{String.valueOf(viagem.getId())},
+                    null,
+                    null,
+                    null
+            );
+
+            if (cursor.moveToFirst()) {
+
+                GastoAereoModel gastoAereo = new GastoAereoModel();
+                gastoAereo.setId(cursor.getLong(0));
+                gastoAereo.setCusto_pessoa(cursor.getDouble(1));
+                gastoAereo.setAluguel_veiculo(cursor.getDouble(2));
+                gastoAereo.setUtilizado(cursor.getInt(3));
+                gastoAereo.setViagem(new ViagensDAO(context).selectById(cursor.getLong(4)));
+                return gastoAereo;
+            }
+
+        } finally {
+            Close();
+        }
+        return gasto;
     }
 
     public ArrayList<GastoAereoModel> SelectAll() {
