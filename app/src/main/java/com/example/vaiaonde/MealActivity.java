@@ -8,9 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.vaiaonde.database.dao.GastoRefeicoesDAO;
+import com.example.vaiaonde.database.dao.ViagensDAO;
 import com.example.vaiaonde.database.model.GastoRefeicoesModel;
 import com.example.vaiaonde.database.model.ViagensModel;
 
@@ -30,24 +33,27 @@ public class MealActivity extends AppCompatActivity {
         txtCustoRefeicao = findViewById(R.id.txtCustoRefeicao);
         txtRefeicoes = findViewById(R.id.txtRefeicoes);
         txtTotal = findViewById(R.id.txtTotal);
-        ViagensModel viagem = new ViagensModel();
-        viagem.setDestino(getIntent().getStringExtra("destino"));
-        viagem.setId(getIntent().getIntExtra("travel", 0));
-
-        GastoRefeicoesModel gasto = new GastoRefeicoesModel();
-        gasto.setRefeicoes_dia(0);
-        gasto.setCusto_refeicao(0);
-        gasto.setViagem(viagem);
+        long viagemId = getIntent().getLongExtra("travel", 0);
+        if(viagemId == 0){
+            startActivity(new Intent(MealActivity.this, MainActivity.class));
+        }
+        ViagensModel viagem = new ViagensDAO(MealActivity.this).selectById(viagemId);
+        if(viagem == null){
+            startActivity(new Intent(MealActivity.this, MainActivity.class));
+            return;
+        }
+        GastoRefeicoesModel gasto = new GastoRefeicoesDAO(MealActivity.this).SelectByViagem(viagem);
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MealActivity.this, TravelActivity.class);
-                intent.putExtra("destino", viagem.getDestino());
                 intent.putExtra("travel", viagem.getId());
                 startActivity(intent);
             }
         });
-
+        txtCustoRefeicao.setText(String.valueOf(gasto.getCusto_refeicao()));
+        txtRefeicoes.setText(String.valueOf(gasto.getRefeicoes_dia()));
+        txtTotal.setText(String.valueOf(gasto.calcularParcial()));
         txtCustoRefeicao.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -55,6 +61,7 @@ public class MealActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String custo = s.toString();
+                custo = custo.replace(',', '.');
                 if(custo.endsWith(".") || custo.isEmpty()){
                     custo += "0";
                 }
@@ -72,6 +79,7 @@ public class MealActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String custo = s.toString();
+                custo = custo.replace(',', '.');
                 if(custo.isEmpty()){
                     custo = "0";
                 }
@@ -81,6 +89,26 @@ public class MealActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {}
+        });
+
+        btnSalvar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                long id = -1;
+                if(gasto.getId() == 0){
+                    id = new GastoRefeicoesDAO(MealActivity.this).Insert(gasto);
+                }else{
+                    id = new GastoRefeicoesDAO(MealActivity.this).Update(gasto);
+                }
+                if(id == -1){
+                    Toast.makeText(MealActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MealActivity.this, "Informações atualizadas com sucesso!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MealActivity.this, TravelActivity.class);
+                    intent.putExtra("travel", gasto.getViagem().getId());
+                    startActivity(intent);
+                }
+            }
         });
     }
 }

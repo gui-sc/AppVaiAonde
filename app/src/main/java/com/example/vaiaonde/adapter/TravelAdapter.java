@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.vaiaonde.R;
 import com.example.vaiaonde.TravelActivity;
@@ -63,7 +64,11 @@ public class TravelAdapter extends BaseAdapter {
                 Intent intent = new Intent(context, TravelActivity.class);
                 intent.putExtra("travel", travel.getId());
                 intent.putExtra("destino", travel.getDestino());
-                startActivity(context, intent, null);
+                if(travel.getAtiva()){
+                    startActivity(context, intent, null);
+                }else{
+                    Toast.makeText(activity, "Viagem já encerrada", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

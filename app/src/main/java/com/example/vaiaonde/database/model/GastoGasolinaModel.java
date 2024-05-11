@@ -104,6 +104,13 @@ public class GastoGasolinaModel {
     }
 
     public double calcularCustoTotal() {
-        return (Double.parseDouble(String.valueOf(this.km)) / Double.parseDouble(String.valueOf(this.km_litro))) * this.custo_litro * this.total_veiculos;
+        System.out.println(Double.parseDouble(String.valueOf(this.km)));
+        System.out.println(Double.parseDouble(String.valueOf(this.km_litro)));
+        System.out.println(Double.parseDouble(String.valueOf(this.total_veiculos)));
+        System.out.println(this.custo_litro);
+        if(this.km_litro == 0){
+            return 0;
+        }
+        return (Double.parseDouble(String.valueOf(this.km)) / Double.parseDouble(String.valueOf(this.km_litro))) * this.custo_litro * Double.parseDouble(String.valueOf(this.total_veiculos));
     }
 }

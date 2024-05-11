@@ -34,15 +34,18 @@ public class TravelActivity extends AppCompatActivity {
         btnVoltar = findViewById(R.id.btnVoltar);
         //get extras
         long id = getIntent().getLongExtra("travel", 0);
-        System.out.println("id: "+id);
+
         if(id == 0){
             startActivity(new Intent(TravelActivity.this, MainActivity.class));
+            return;
         }
         ViagensModel viagem = new ViagensDAO(TravelActivity.this).selectById(id);
         if(viagem == null){
             startActivity(new Intent(TravelActivity.this, MainActivity.class));
             return;
         } else if(!viagem.getAtiva()){
+            System.out.println(viagem.getId());
+            System.out.println(viagem.getAtiva());
             Toast.makeText(this, "Viagem já encerrada!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(TravelActivity.this, MainActivity.class));
             return;
@@ -54,7 +57,6 @@ public class TravelActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TravelActivity.this, MealActivity.class);
-                intent.putExtra("destino", viagem.getDestino());
                 intent.putExtra("travel", viagem.getId());
                 startActivity(intent);
             }
@@ -65,6 +67,7 @@ public class TravelActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(TravelActivity.this, HostActivity.class);
+                intent.putExtra("travel", viagem.getId());
                 startActivity(intent);
             }
         });
@@ -74,6 +77,7 @@ public class TravelActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(TravelActivity.this, FuelActivity.class);
+                intent.putExtra("travel", viagem.getId());
                 startActivity(intent);
             }
         });
@@ -82,6 +86,7 @@ public class TravelActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(TravelActivity.this, PlaneActivity.class);
+                intent.putExtra("travel", viagem.getId());
                 startActivity(intent);
             }
         });

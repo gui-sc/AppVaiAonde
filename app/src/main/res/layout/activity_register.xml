@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@string/font"
             android:layout_marginHorizontal="15dp"
-            android:inputType="textVisiblePassword"
+            android:inputType="textPassword"
             android:hint="@string/hintPassword"/>
 
         <com.google.android.material.divider.MaterialDivider

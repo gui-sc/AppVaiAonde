@@ -6,6 +6,7 @@ import android.database.Cursor;
 
 import com.example.vaiaonde.database.DBOpenHelper;
 import com.example.vaiaonde.database.model.GastoHospedagemModel;
+import com.example.vaiaonde.database.model.ViagensModel;
 
 import java.util.ArrayList;
 
@@ -98,6 +99,43 @@ public class GastoHospedagemDAO extends AbstrataDao {
         }
 
         return linhasAfetadas;
+    }
+
+    public GastoHospedagemModel SelectByViagem(ViagensModel viagem){
+        GastoHospedagemModel gasto = new GastoHospedagemModel();
+        gasto.setId(0);
+        gasto.setViagem(viagem);
+        gasto.setNoites(0);
+        gasto.setQuartos(0);
+        gasto.setCusto_noite(0);
+        try {
+            Open();
+            Cursor cursor = db.query(
+                    GastoHospedagemModel.TABELA_NOME,
+                    colunas,
+                    GastoHospedagemModel.COLUNA_VIAGEM_ID + " = ?",
+                    new String[]{String.valueOf(viagem.getId())},
+                    null,
+                    null,
+                    null
+            );
+
+            if (cursor.moveToFirst()) {
+
+                GastoHospedagemModel gastoHospedagem = new GastoHospedagemModel();
+                gastoHospedagem.setId(cursor.getLong(0));
+                gastoHospedagem.setViagem(viagem);
+                gastoHospedagem.setCusto_noite(cursor.getDouble(2));
+                gastoHospedagem.setNoites(cursor.getInt(3));
+                gastoHospedagem.setQuartos(cursor.getInt(4));
+                gastoHospedagem.setUtilizado(cursor.getInt(5));
+
+                return gastoHospedagem;
+            }
+        } finally {
+            Close();
+        }
+        return gasto;
     }
 
     public ArrayList<GastoHospedagemModel> SelectAll() {

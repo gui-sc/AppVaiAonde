@@ -5,6 +5,7 @@ import android.database.Cursor;
 
 import com.example.vaiaonde.database.DBOpenHelper;
 import com.example.vaiaonde.database.model.GastoRefeicoesModel;
+import com.example.vaiaonde.database.model.ViagensModel;
 
 import java.util.ArrayList;
 
@@ -96,6 +97,38 @@ public class GastoRefeicoesDAO extends AbstrataDao {
         return linhasAfetadas;
     }
 
+    public GastoRefeicoesModel SelectByViagem(ViagensModel viagem){
+        GastoRefeicoesModel gasto = new GastoRefeicoesModel();
+        gasto.setId(0);
+        gasto.setViagem(viagem);
+        gasto.setCusto_refeicao(0);
+        gasto.setRefeicoes_dia(0);
+        try{
+            Open();
+            Cursor cursor = db.query(
+                    GastoRefeicoesModel.TABELA_NOME,
+                    colunas,
+                    GastoRefeicoesModel.COLUNA_VIAGEM_ID + " = ?",
+                    new String[]{String.valueOf(viagem.getId())},
+                    null,
+                    null,
+                    null
+            );
+
+            if (cursor.moveToFirst()) {
+                GastoRefeicoesModel gastoRefeicao = new GastoRefeicoesModel();
+                gastoRefeicao.setId(cursor.getLong(0));
+                gastoRefeicao.setViagem(viagem);
+                gastoRefeicao.setCusto_refeicao(cursor.getDouble(2));
+                gastoRefeicao.setRefeicoes_dia(cursor.getInt(3));
+                gastoRefeicao.setUtilizado(cursor.getInt(4));
+                return gastoRefeicao;
+            }
+        }finally {
+            Close();
+        }
+        return gasto;
+    }
     public ArrayList<GastoRefeicoesModel> SelectAll() {
 
         ArrayList<GastoRefeicoesModel> lista = new ArrayList<>();

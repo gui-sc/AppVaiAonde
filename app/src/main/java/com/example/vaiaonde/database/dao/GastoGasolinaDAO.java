@@ -6,6 +6,7 @@ import android.database.Cursor;
 
 import com.example.vaiaonde.database.DBOpenHelper;
 import com.example.vaiaonde.database.model.GastoGasolinaModel;
+import com.example.vaiaonde.database.model.ViagensModel;
 
 import java.util.ArrayList;
 
@@ -103,6 +104,44 @@ public class GastoGasolinaDAO extends AbstrataDao {
         }
 
         return linhasAfetadas;
+    }
+
+    public GastoGasolinaModel SelectByViagem(ViagensModel viagensModel){
+        GastoGasolinaModel gasto = new GastoGasolinaModel();
+        gasto.setViagem(viagensModel);
+        gasto.setId(0);
+        gasto.setKm(0);
+        gasto.setCusto_litro(0);
+        gasto.setKm_litro(0);
+        gasto.setTotal_veiculos(0);
+        try {
+            Open();
+            Cursor cursor = db.query(
+                    GastoGasolinaModel.TABELA_NOME,
+                    colunas,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+            if (cursor.moveToFirst()) {
+
+                GastoGasolinaModel gastoGasolina = new GastoGasolinaModel();
+                gastoGasolina.setId(cursor.getLong(0));
+                gastoGasolina.setViagem(viagensModel);
+                gastoGasolina.setKm(cursor.getInt(2));
+                gastoGasolina.setKm_litro(cursor.getInt(3));
+                gastoGasolina.setCusto_litro(cursor.getDouble(4));
+                gastoGasolina.setTotal_veiculos(cursor.getInt(5));
+                gastoGasolina.setUtilizado(cursor.getInt(6));
+                return gastoGasolina;
+            }
+        } finally {
+            Close();
+        }
+        return gasto;
     }
 
     public ArrayList<GastoGasolinaModel> SelectAll() {
