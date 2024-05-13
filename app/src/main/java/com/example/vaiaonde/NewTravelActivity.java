@@ -27,7 +27,8 @@ public class NewTravelActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_travel);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(NewTravelActivity.this);
         long usuario_id = preferences.getLong(Shared.KEY_USUARIO_ID, 0);
-        
+        long viagem_id = getIntent().getLongExtra("travel", 0);
+
         if(usuario_id == 0){
             startActivity(new Intent(NewTravelActivity.this, LoginActivity.class));
         }
@@ -40,7 +41,13 @@ public class NewTravelActivity extends AppCompatActivity {
         txtDias = findViewById(R.id.txtDias);
         txtPessoas = findViewById(R.id.txtPessoas);
         txtDestino = findViewById(R.id.txtDestino);
-
+        ViagensModel viagem = null;
+        if(viagem_id != 0){
+            viagem = new ViagensDAO(NewTravelActivity.this).selectById(viagem_id);
+            txtDestino.setText(viagem.getDestino());
+            txtPessoas.setText(String.valueOf(viagem.getPessoas()));
+            txtDias.setText(String.valueOf(viagem.getDias()));
+        }
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,6 +55,7 @@ public class NewTravelActivity extends AppCompatActivity {
             }
         });
 
+        ViagensModel finalViagem = viagem;
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,19 +67,37 @@ public class NewTravelActivity extends AppCompatActivity {
                 }else{
                     int pessoas = Integer.parseInt(pessoasValue);
                     int dias = Integer.parseInt(diasValue);
-                    ViagensModel viagem = new ViagensModel();
-                    viagem.setPessoas(pessoas);
-                    viagem.setUsuario(usuario);
-                    viagem.setAtiva(true);
-                    viagem.setDestino(destino);
-                    viagem.setDias(dias);
-                    long retorno = new ViagensDAO(NewTravelActivity.this).Insert(viagem);
-                    if(retorno == -1){
-                        Toast.makeText(NewTravelActivity.this, "Erro ao cadastrar viagem!", Toast.LENGTH_SHORT).show();
+                    if(viagem_id == 0){
+                        ViagensModel viagem = new ViagensModel();
+                        viagem.setPessoas(pessoas);
+                        viagem.setUsuario(usuario);
+                        viagem.setAtiva(true);
+                        viagem.setDestino(destino);
+                        viagem.setDias(dias);
+                        long retorno = new ViagensDAO(NewTravelActivity.this).Insert(viagem);
+                        if(retorno == -1){
+                            Toast.makeText(NewTravelActivity.this, "Erro ao cadastrar viagem!", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(NewTravelActivity.this, "Viagem inserida com sucesso!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(NewTravelActivity.this, TravelActivity.class);
+                            intent.putExtra("travel", retorno);
+                            startActivity(intent);
+                        }
                     }else{
-                        Toast.makeText(NewTravelActivity.this, "Viagem inserida com sucesso!", Toast.LENGTH_SHORT).show();
+                        finalViagem.setPessoas(pessoas);
+                        finalViagem.setDias(dias);
+                        finalViagem.setDestino(destino);
+                        long retorno = new ViagensDAO(NewTravelActivity.this).Update(finalViagem);
+                        if(retorno == -1){
+                            Toast.makeText(NewTravelActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(NewTravelActivity.this, "Viagem atualizada com sucesso!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(NewTravelActivity.this, TravelActivity.class);
+                            intent.putExtra("travel", retorno);
+                            startActivity(intent);
+                        }
                     }
-                    startActivity(new Intent(NewTravelActivity.this, MainActivity.class));
+
                 }
                 
             }

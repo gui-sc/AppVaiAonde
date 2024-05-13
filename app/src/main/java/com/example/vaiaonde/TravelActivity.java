@@ -20,7 +20,7 @@ public class TravelActivity extends AppCompatActivity {
 
     private TextView txtDestino;
     private Button btnEncerrar, btnRefeicao, btnHospedagem, btnGasolina,
-            btnAviao, btnOutros, btnApagar, btnVoltar;
+            btnAviao, btnOutros, btnApagar, btnVoltar, btnEditar, btnResumo;
     private GastoDiversosModel selectedGasto;
 
     @Override
@@ -37,6 +37,7 @@ public class TravelActivity extends AppCompatActivity {
         btnOutros = findViewById(R.id.btnOutros);
         btnApagar = findViewById(R.id.btnApagar);
         btnVoltar = findViewById(R.id.btnVoltar);
+        btnEditar = findViewById(R.id.btnEditarViagem);
         //get extras
         long id = getIntent().getLongExtra("travel", 0);
 
@@ -132,6 +133,15 @@ public class TravelActivity extends AppCompatActivity {
                     Toast.makeText(TravelActivity.this, "Viagem encerrada!", Toast.LENGTH_SHORT).show();
                 }
                 startActivity(new Intent(TravelActivity.this, MainActivity.class));
+            }
+        });
+
+        btnEditar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TravelActivity.this, NewTravelActivity.class);
+                intent.putExtra("travel", viagem.getId());
+                startActivity(intent);
             }
         });
     }
