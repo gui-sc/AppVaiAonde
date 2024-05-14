@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.vaiaonde.R;
+import com.example.vaiaonde.ResumeActivity;
 import com.example.vaiaonde.TravelActivity;
 import com.example.vaiaonde.database.model.ViagensModel;
 
@@ -61,14 +62,14 @@ public class TravelAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, TravelActivity.class);
-                intent.putExtra("travel", travel.getId());
-                intent.putExtra("destino", travel.getDestino());
+                Intent intent;
                 if(travel.getAtiva()){
-                    startActivity(context, intent, null);
+                    intent = new Intent(context, TravelActivity.class);
                 }else{
-                    Toast.makeText(activity, "Viagem já encerrada", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(context, ResumeActivity.class);
                 }
+                intent.putExtra("travel", travel.getId());
+                startActivity(context, intent, null);
             }
         });
 

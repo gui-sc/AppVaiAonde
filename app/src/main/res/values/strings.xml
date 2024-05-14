@@ -52,4 +52,11 @@
     <string name="gastos">Gastos</string>
     <string name="resumo">Resumo</string>
     <string name="editar_viagem">Editar Viagem</string>
+    <string name="hospedagem_dinheiro">Hospedagem: R$</string>
+    <string name="gasolina_dinheiro">Gasolina: R$</string>
+    <string name="refeicoes_dinheiro">Refeições: R$</string>
+    <string name="outros_gastos_dinheiro">Outros Gastos: R$</string>
+    <string name="tarifas_aereas_dinheiro">Tarifas Aéreas: R$</string>
+    <string name="total_dinheiro">Total: R$</string>
+    <string name="total_por_pessoa_dinheiro">Total/Pessoa: R$</string>
 </resources>

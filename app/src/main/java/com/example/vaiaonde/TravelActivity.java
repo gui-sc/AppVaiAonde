@@ -38,6 +38,7 @@ public class TravelActivity extends AppCompatActivity {
         btnApagar = findViewById(R.id.btnApagar);
         btnVoltar = findViewById(R.id.btnVoltar);
         btnEditar = findViewById(R.id.btnEditarViagem);
+        btnResumo = findViewById(R.id.btnResumo);
         //get extras
         long id = getIntent().getLongExtra("travel", 0);
 
@@ -108,7 +109,14 @@ public class TravelActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        btnResumo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TravelActivity.this, ResumeActivity.class);
+                intent.putExtra("travel", viagem.getId());
+                startActivity(intent);
+            }
+        });
         btnApagar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
