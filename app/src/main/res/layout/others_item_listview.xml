@@ -16,22 +16,12 @@
         android:fontFamily="@string/font"/>
 
     <TextView
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:textSize="15sp"
-        android:text="@string/dinheiro"
-        android:layout_weight="15"
-        android:textColor="@color/text"
-        android:padding="15dp"
-        android:fontFamily="@string/font"/>
-
-    <TextView
         android:id="@+id/txtValue"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:textSize="15sp"
         android:textAlignment="textEnd"
-        android:layout_weight="35"
+        android:layout_weight="50"
         android:textColor="@color/text"
         android:padding="15dp"
         android:fontFamily="@string/font"/>

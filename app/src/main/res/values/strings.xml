@@ -59,4 +59,5 @@
     <string name="tarifas_aereas_dinheiro">Tarifas Aéreas: R$</string>
     <string name="total_dinheiro">Total: R$</string>
     <string name="total_por_pessoa_dinheiro">Total/Pessoa: R$</string>
+    <string name="valor">Valor</string>
 </resources>

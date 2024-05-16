@@ -88,6 +88,7 @@ public class OtherActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String custo = txtValor.getText().toString();
+                custo = custo.replace(",",".");
                 if(custo.endsWith(".") || custo.isEmpty()){
                     custo += "0";
                 }

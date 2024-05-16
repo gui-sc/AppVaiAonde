@@ -63,7 +63,8 @@ public class OtherItemAdapter extends BaseAdapter {
         TextView txtName = convertView.findViewById(R.id.txtName);
         txtName.setText(gasto.getDescricao());
         TextView txtValue = convertView.findViewById(R.id.txtValue);
-        txtValue.setText(decimalFormat.format(gasto.getValor()));
+        String valueText = "R$ "+decimalFormat.format(gasto.getValor());
+        txtValue.setText(valueText);
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
