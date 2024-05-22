@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         long usuario_id = preferences.getLong(Shared.KEY_USUARIO_ID, 0);
         if(usuario_id == 0){
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
         }
         btnNovaViagem = findViewById(R.id.btnNovaViagem);
         btnSair = findViewById(R.id.btnSair);
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, NewTravelActivity.class));
+                finish();
             }
         });
         btnSair.setOnClickListener(new View.OnClickListener() {
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 edit.remove(Shared.KEY_USUARIO_ID);
                 edit.apply();
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finish();
             }
         });
         //viagens em aberto

@@ -37,6 +37,7 @@ public class PlaneActivity extends AppCompatActivity {
         ViagensModel viagem = new ViagensDAO(PlaneActivity.this).selectById(id);
         if(viagem == null){
             startActivity(new Intent(PlaneActivity.this, MainActivity.class));
+            finish();
             return;
         }
         GastoAereoModel gasto = new GastoAereoDAO(PlaneActivity.this).SelectByViagem(viagem);
@@ -87,17 +88,24 @@ public class PlaneActivity extends AppCompatActivity {
                 Intent intent = new Intent(PlaneActivity.this, TravelActivity.class);
                 intent.putExtra("travel", viagem.getId());
                 startActivity(intent);
+                finish();
             }
         });
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 long id = -1;
+                if(gasto.getCusto_pessoa() <= 0){
+                    Toast.makeText(PlaneActivity.this, "O custo por pessoa precisa ser maior que 0.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if(gasto.getId() == 0){
                     id = new GastoAereoDAO(PlaneActivity.this).Insert(gasto);
                 }else{
                     id = new GastoAereoDAO(PlaneActivity.this).Update(gasto);
                 }
+
                 if(id == -1){
                     Toast.makeText(PlaneActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
                 } else {
@@ -105,6 +113,7 @@ public class PlaneActivity extends AppCompatActivity {
                     Intent intent = new Intent(PlaneActivity.this, TravelActivity.class);
                     intent.putExtra("travel", gasto.getViagem().getId());
                     startActivity(intent);
+                    finish();
                 }
             }
         });

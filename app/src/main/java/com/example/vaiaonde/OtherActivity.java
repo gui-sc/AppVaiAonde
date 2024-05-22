@@ -46,11 +46,13 @@ public class OtherActivity extends AppCompatActivity {
         long id = getIntent().getLongExtra("travel", 0);
         if(id == 0){
             startActivity(new Intent(OtherActivity.this, MainActivity.class));
+            finish();
             return;
         }
         ViagensModel viagem = new ViagensDAO(OtherActivity.this).selectById(id);
         if(viagem == null){
             startActivity(new Intent(OtherActivity.this, MainActivity.class));
+            finish();
             return;
         }
 
@@ -70,6 +72,7 @@ public class OtherActivity extends AppCompatActivity {
                     Toast.makeText(OtherActivity.this, "Você não selecionou nenhum gasto!", Toast.LENGTH_SHORT).show();
                 }else{
                     long id = new GastoDiversosDAO(OtherActivity.this).Delete(selectedGasto);
+
                     if(id != -1){
                         listGastosDiversos.remove(selectedGasto);
                         otherItemAdapter.setItems(listGastosDiversos);
@@ -78,6 +81,7 @@ public class OtherActivity extends AppCompatActivity {
                     }else{
                         Toast.makeText(OtherActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
                     }
+
                     txtDescricao.setText("");
                     txtValor.setText("");
                     selectedGasto = null;
@@ -87,19 +91,30 @@ public class OtherActivity extends AppCompatActivity {
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String custo = txtValor.getText().toString();
-                custo = custo.replace(",",".");
-                if(custo.endsWith(".") || custo.isEmpty()){
-                    custo += "0";
+                String valor = txtValor.getText().toString();
+                valor = valor.replace(",",".");
+                if(valor.endsWith(".") || valor.isEmpty()){
+                    valor += "0";
                 }
                 long id = -1;
+                double custo = Double.parseDouble(valor);
+                String descricao = txtDescricao.getText().toString();
+                if(descricao.trim().isEmpty()){
+                    Toast.makeText(OtherActivity.this, "Digite algo como descrição.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(custo <= 0){
+                    Toast.makeText(OtherActivity.this, "Insira um valor maior que zero.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if(selectedGasto == null){
                     GastoDiversosModel gasto = new GastoDiversosModel();
                     gasto.setViagem(viagem);
-                    gasto.setDescricao(txtDescricao.getText().toString());
+                    gasto.setDescricao(descricao);
 
-                    gasto.setValor(Double.parseDouble(custo));
+                    gasto.setValor(custo);
                     id = new GastoDiversosDAO(OtherActivity.this).Insert(gasto);
+
                     if(id != -1){
                         Toast.makeText(OtherActivity.this, "Inserido com sucesso!", Toast.LENGTH_SHORT).show();
                         listGastosDiversos.add(gasto);
@@ -108,9 +123,10 @@ public class OtherActivity extends AppCompatActivity {
                     }
                 }else{
                     int position = listGastosDiversos.indexOf(selectedGasto);
-                    selectedGasto.setDescricao(txtDescricao.getText().toString());
-                    selectedGasto.setValor(Double.parseDouble(custo));
+                    selectedGasto.setDescricao(descricao);
+                    selectedGasto.setValor(custo);
                     id = new GastoDiversosDAO(OtherActivity.this).Update(selectedGasto);
+
                     if(id != -1){
                         Toast.makeText(OtherActivity.this, "Alterado com sucesso!", Toast.LENGTH_SHORT).show();
                         listGastosDiversos.set(position, selectedGasto);
@@ -118,9 +134,11 @@ public class OtherActivity extends AppCompatActivity {
                         listGastos.setAdapter(otherItemAdapter);
                     }
                 }
+
                 if(id == -1){
                     Toast.makeText(OtherActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
                 }
+
                 txtDescricao.setText("");
                 txtValor.setText("");
                 selectedGasto = null;

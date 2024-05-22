@@ -117,11 +117,17 @@ public class HostActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 long id = -1;
+                if(gasto.getCusto_noite() <= 0 || gasto.getNoites() <= 0 || gasto.getQuartos() <= 0){
+                    Toast.makeText(HostActivity.this, "Todos os valores precisam ser maiores do que 0.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if(gasto.getId() == 0){
                     id = new GastoHospedagemDAO(HostActivity.this).Insert(gasto);
                 }else{
                     id = new GastoHospedagemDAO(HostActivity.this).Update(gasto);
                 }
+
                 if(id == -1){
                     Toast.makeText(HostActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
                 } else {

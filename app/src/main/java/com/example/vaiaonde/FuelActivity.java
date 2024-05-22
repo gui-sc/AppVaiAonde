@@ -136,11 +136,17 @@ public class FuelActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 long id = -1;
+                if(gasto.getKm() <= 0 || gasto.getCusto_litro() <= 0 || gasto.getKm_litro() <= 0 || gasto.getTotal_veiculos() <= 0){
+                    Toast.makeText(FuelActivity.this, "Todos os valores precisam ser maiores do que 0.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if(gasto.getId() == 0){
                     id = new GastoGasolinaDAO(FuelActivity.this).Insert(gasto);
                 }else{
                     id = new GastoGasolinaDAO(FuelActivity.this).Update(gasto);
                 }
+
                 if(id == -1){
                     Toast.makeText(FuelActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
                 } else {

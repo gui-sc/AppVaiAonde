@@ -30,6 +30,8 @@ public class RegisterActivity extends AppCompatActivity {
         long usuario_id = preferences.getLong(Shared.KEY_USUARIO_ID, 0);
         if(usuario_id != 0){
             startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+            finish();
+            return;
         }
         txtEmail = findViewById(R.id.txtEmail);
         txtPassword = findViewById(R.id.txtPassword);
@@ -40,6 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                finish();
             }
         });
 
@@ -48,8 +51,17 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = txtEmail.getText().toString();
                 String password = txtPassword.getText().toString();
-                if(email.trim().isEmpty() || email.trim().contains(" ") || password.trim().isEmpty()){
-                    Toast.makeText(RegisterActivity.this, "Email ou senha inválidos!", Toast.LENGTH_SHORT).show();
+                if(email.trim().isEmpty()  || password.trim().isEmpty()){
+                    Toast.makeText(RegisterActivity.this, "Email e senha não podem ser vazios!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(email.contains(" ")){
+                    Toast.makeText(RegisterActivity.this, "Email inválido!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(password.length() < 6){
+                    Toast.makeText(RegisterActivity.this, "A senha precisa conter pelo menos 6 caracteres.", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 UsuariosModel usuario = new UsuariosModel();
                 usuario.setEmail(email);
@@ -61,6 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
                     edit.putLong(Shared.KEY_USUARIO_ID, id);
                     edit.apply();
                     startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                    finish();
                 }
             }
         });

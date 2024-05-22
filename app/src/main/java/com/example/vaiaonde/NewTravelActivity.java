@@ -31,10 +31,14 @@ public class NewTravelActivity extends AppCompatActivity {
 
         if(usuario_id == 0){
             startActivity(new Intent(NewTravelActivity.this, LoginActivity.class));
+            finish();
+            return;
         }
         UsuariosModel usuario = new UsuariosDAO(NewTravelActivity.this).SelectById(usuario_id);
         if(usuario == null){
             startActivity(new Intent(NewTravelActivity.this, LoginActivity.class));
+            finish();
+            return;
         }
         btnVoltar = findViewById(R.id.btnVoltar);
         btnSalvar = findViewById(R.id.btnSalvar);
@@ -52,6 +56,7 @@ public class NewTravelActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(NewTravelActivity.this, MainActivity.class));
+                finish();
             }
         });
 
@@ -64,9 +69,13 @@ public class NewTravelActivity extends AppCompatActivity {
                 String diasValue = txtDias.getText().toString();
                 if(destino.trim().isEmpty() || pessoasValue.trim().isEmpty() || diasValue.trim().isEmpty()){
                     Toast.makeText(NewTravelActivity.this, "Insira todos os dados!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                int pessoas = Integer.parseInt(pessoasValue);
+                int dias = Integer.parseInt(diasValue);
+                if(pessoas <= 0 || dias <= 0){
+                    Toast.makeText(NewTravelActivity.this, "Todos os valores precisam ser maiores do que 0.", Toast.LENGTH_SHORT).show();
                 }else{
-                    int pessoas = Integer.parseInt(pessoasValue);
-                    int dias = Integer.parseInt(diasValue);
                     if(viagem_id == 0){
                         ViagensModel viagem = new ViagensModel();
                         viagem.setPessoas(pessoas);
@@ -75,6 +84,7 @@ public class NewTravelActivity extends AppCompatActivity {
                         viagem.setDestino(destino);
                         viagem.setDias(dias);
                         long retorno = new ViagensDAO(NewTravelActivity.this).Insert(viagem);
+
                         if(retorno == -1){
                             Toast.makeText(NewTravelActivity.this, "Erro ao cadastrar viagem!", Toast.LENGTH_SHORT).show();
                         }else{
@@ -82,12 +92,14 @@ public class NewTravelActivity extends AppCompatActivity {
                             Intent intent = new Intent(NewTravelActivity.this, TravelActivity.class);
                             intent.putExtra("travel", retorno);
                             startActivity(intent);
+                            finish();
                         }
                     }else{
                         finalViagem.setPessoas(pessoas);
                         finalViagem.setDias(dias);
                         finalViagem.setDestino(destino);
                         long retorno = new ViagensDAO(NewTravelActivity.this).Update(finalViagem);
+
                         if(retorno == -1){
                             Toast.makeText(NewTravelActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
                         }else{
@@ -95,6 +107,7 @@ public class NewTravelActivity extends AppCompatActivity {
                             Intent intent = new Intent(NewTravelActivity.this, TravelActivity.class);
                             intent.putExtra("travel", retorno);
                             startActivity(intent);
+                            finish();
                         }
                     }
 

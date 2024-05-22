@@ -36,10 +36,13 @@ public class MealActivity extends AppCompatActivity {
         long viagemId = getIntent().getLongExtra("travel", 0);
         if(viagemId == 0){
             startActivity(new Intent(MealActivity.this, MainActivity.class));
+            finish();
+            return;
         }
         ViagensModel viagem = new ViagensDAO(MealActivity.this).selectById(viagemId);
         if(viagem == null){
             startActivity(new Intent(MealActivity.this, MainActivity.class));
+            finish();
             return;
         }
         GastoRefeicoesModel gasto = new GastoRefeicoesDAO(MealActivity.this).SelectByViagem(viagem);
@@ -49,6 +52,7 @@ public class MealActivity extends AppCompatActivity {
                 Intent intent = new Intent(MealActivity.this, TravelActivity.class);
                 intent.putExtra("travel", viagem.getId());
                 startActivity(intent);
+                finish();
             }
         });
         txtCustoRefeicao.setText(String.valueOf(gasto.getCusto_refeicao()));
@@ -95,11 +99,17 @@ public class MealActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 long id = -1;
+                if(gasto.getCusto_refeicao() <= 0 || gasto.getRefeicoes_dia() <= 0) {
+                    Toast.makeText(MealActivity.this, "Todos os valores precisam ser maiores do que 0.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if(gasto.getId() == 0){
                     id = new GastoRefeicoesDAO(MealActivity.this).Insert(gasto);
                 }else{
                     id = new GastoRefeicoesDAO(MealActivity.this).Update(gasto);
                 }
+
                 if(id == -1){
                     Toast.makeText(MealActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
                 } else {
@@ -107,6 +117,7 @@ public class MealActivity extends AppCompatActivity {
                     Intent intent = new Intent(MealActivity.this, TravelActivity.class);
                     intent.putExtra("travel", gasto.getViagem().getId());
                     startActivity(intent);
+                    finish();
                 }
             }
         });

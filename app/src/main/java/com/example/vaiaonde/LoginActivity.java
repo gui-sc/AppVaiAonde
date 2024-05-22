@@ -30,6 +30,8 @@ public class LoginActivity extends AppCompatActivity {
         long usuario_id = preferences.getLong(Shared.KEY_USUARIO_ID, 0);
         if(usuario_id != 0){
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+            return;
         }
         setContentView(R.layout.activity_login);
         btnEntrar = findViewById(R.id.btnEntrar);
@@ -49,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
                     edit.putLong(Shared.KEY_USUARIO_ID, usuario.getId());
                     edit.apply();
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
                 } else{
                     Toast.makeText(LoginActivity.this, "Usuário ou senha incorretos!", Toast.LENGTH_SHORT).show();
                 }
@@ -59,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+                finish();
             }
         });
     }

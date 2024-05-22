@@ -57,11 +57,13 @@ public class ResumeActivity extends AppCompatActivity {
         long id = getIntent().getLongExtra("travel", 0);
         if(id == 0) {
             startActivity(new Intent(ResumeActivity.this, MainActivity.class));
+            finish();
             return;
         }
         ViagensModel viagem = new ViagensDAO(ResumeActivity.this).selectById(id);
         if(viagem == null){
             startActivity(new Intent(ResumeActivity.this, MainActivity.class));
+            finish();
             return;
         }
         txtDestino.setText(viagem.getDestino());
@@ -102,18 +104,23 @@ public class ResumeActivity extends AppCompatActivity {
                 }else{
                     startActivity(new Intent(ResumeActivity.this, MainActivity.class));
                 }
+
+                finish();
             }
         });
         btnApagar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 long id = new ViagensDAO(ResumeActivity.this).Delete(viagem);
+
                 if(id == -1){
                     Toast.makeText(ResumeActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(ResumeActivity.this, "Viagem apagada!", Toast.LENGTH_SHORT).show();
                 }
+
                 startActivity(new Intent(ResumeActivity.this, MainActivity.class));
+                finish();
             }
         });
     }

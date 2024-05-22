@@ -44,11 +44,13 @@ public class TravelActivity extends AppCompatActivity {
 
         if(id == 0){
             startActivity(new Intent(TravelActivity.this, MainActivity.class));
+            finish();
             return;
         }
         ViagensModel viagem = new ViagensDAO(TravelActivity.this).selectById(id);
         if(viagem == null){
             startActivity(new Intent(TravelActivity.this, MainActivity.class));
+            finish();
             return;
         }
 
@@ -60,35 +62,36 @@ public class TravelActivity extends AppCompatActivity {
                 Intent intent = new Intent(TravelActivity.this, MealActivity.class);
                 intent.putExtra("travel", viagem.getId());
                 startActivity(intent);
+                finish();
             }
         });
 
         btnHospedagem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(TravelActivity.this, HostActivity.class);
                 intent.putExtra("travel", viagem.getId());
                 startActivity(intent);
+                finish();
             }
         });
 
         btnGasolina.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(TravelActivity.this, FuelActivity.class);
                 intent.putExtra("travel", viagem.getId());
                 startActivity(intent);
+                finish();
             }
         });
         btnAviao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(TravelActivity.this, PlaneActivity.class);
                 intent.putExtra("travel", viagem.getId());
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -98,15 +101,16 @@ public class TravelActivity extends AppCompatActivity {
                 Intent intent = new Intent(TravelActivity.this, OtherActivity.class);
                 intent.putExtra("travel", viagem.getId());
                 startActivity(intent);
+                finish();
             }
         });
 
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(TravelActivity.this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         btnResumo.setOnClickListener(new View.OnClickListener() {
@@ -115,18 +119,22 @@ public class TravelActivity extends AppCompatActivity {
                 Intent intent = new Intent(TravelActivity.this, ResumeActivity.class);
                 intent.putExtra("travel", viagem.getId());
                 startActivity(intent);
+                finish();
             }
         });
         btnApagar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 long id = new ViagensDAO(TravelActivity.this).Delete(viagem);
+
                 if(id == -1){
                     Toast.makeText(TravelActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(TravelActivity.this, "Viagem apagada!", Toast.LENGTH_SHORT).show();
                 }
+
                 startActivity(new Intent(TravelActivity.this, MainActivity.class));
+                finish();
             }
         });
 
@@ -135,12 +143,15 @@ public class TravelActivity extends AppCompatActivity {
             public void onClick(View v) {
                 viagem.setAtiva(false);
                 long rowsAffected = new ViagensDAO(TravelActivity.this).Update(viagem);
+
                 if(rowsAffected == -1){
                     Toast.makeText(TravelActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(TravelActivity.this, "Viagem encerrada!", Toast.LENGTH_SHORT).show();
                 }
+
                 startActivity(new Intent(TravelActivity.this, MainActivity.class));
+                finish();
             }
         });
 
@@ -150,6 +161,7 @@ public class TravelActivity extends AppCompatActivity {
                 Intent intent = new Intent(TravelActivity.this, NewTravelActivity.class);
                 intent.putExtra("travel", viagem.getId());
                 startActivity(intent);
+                finish();
             }
         });
     }
