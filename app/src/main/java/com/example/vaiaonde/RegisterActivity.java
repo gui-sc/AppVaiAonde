@@ -55,7 +55,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "Email e senha não podem ser vazios!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(email.contains(" ")){
+                if(email.contains(" ") || !email.contains("@") || !email.endsWith(".com") || !email.endsWith(".br")){
                     Toast.makeText(RegisterActivity.this, "Email inválido!", Toast.LENGTH_SHORT).show();
                     return;
                 }
