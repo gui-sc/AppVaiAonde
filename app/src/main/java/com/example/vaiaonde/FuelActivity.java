@@ -24,6 +24,7 @@ public class FuelActivity extends AppCompatActivity {
     private Button btnVoltar, btnSalvar;
     private EditText txtTotalKm, txtMediaLitro,txtCustoLitro, txtTotalVeiculos;
     private TextView txtTotal;
+    private ViagensModel viagem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,11 +39,13 @@ public class FuelActivity extends AppCompatActivity {
         long id = getIntent().getLongExtra("travel", 0);
         if(id == 0){
             startActivity(new Intent(FuelActivity.this, MainActivity.class));
+            finish();
             return;
         }
-        ViagensModel viagem = new ViagensDAO(FuelActivity.this).selectById(id);
+        viagem = new ViagensDAO(FuelActivity.this).selectById(id);
         if(viagem == null){
             startActivity(new Intent(FuelActivity.this, MainActivity.class));
+            finish();
             return;
         }
         GastoGasolinaModel gasto = new GastoGasolinaDAO(FuelActivity.this).SelectByViagem(viagem);
@@ -55,6 +58,9 @@ public class FuelActivity extends AppCompatActivity {
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(FuelActivity.this, TravelActivity.class);
+                intent.putExtra("travel", viagem.getId());
+                startActivity(intent);
                 finish();
             }
         });
@@ -149,10 +155,20 @@ public class FuelActivity extends AppCompatActivity {
                     Toast.makeText(FuelActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(FuelActivity.this, "Informações atualizadas com sucesso!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(FuelActivity.this, TravelActivity.class);
+                    intent.putExtra("travel", viagem.getId());
+                    startActivity(intent);
                     finish();
                 }
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(FuelActivity.this, TravelActivity.class);
+        intent.putExtra("travel", viagem.getId());
+        startActivity(intent);
+        finish();
     }
 
 }

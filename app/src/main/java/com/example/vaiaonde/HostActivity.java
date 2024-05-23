@@ -18,10 +18,13 @@ import com.example.vaiaonde.database.dao.ViagensDAO;
 import com.example.vaiaonde.database.model.GastoHospedagemModel;
 import com.example.vaiaonde.database.model.ViagensModel;
 
+import java.text.DecimalFormat;
+
 public class HostActivity extends AppCompatActivity {
     private Button btnVoltar, btnSalvar;
     private EditText txtTotalQuartos, txtTotalNoites, txtCustoPorNoite;
-            private TextView txtTotal;
+    private TextView txtTotal;
+    private ViagensModel viagem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,15 +36,18 @@ public class HostActivity extends AppCompatActivity {
         txtCustoPorNoite = findViewById(R.id.txtCustoPorNoite);
         txtTotalNoites = findViewById(R.id.txtTotalNoites);
         btnSalvar = findViewById(R.id.btnSalvar);
+        DecimalFormat decimalFormat = new DecimalFormat("0.##");
         long viagemId = getIntent().getLongExtra("travel", 0);
         if(viagemId == 0) {
             startActivity(new Intent(HostActivity.this, MainActivity.class));
+            finish();
             return;
         }
 
-        ViagensModel viagem = new ViagensDAO(HostActivity.this).selectById(viagemId);
+        viagem = new ViagensDAO(HostActivity.this).selectById(viagemId);
         if(viagem == null){
             startActivity(new Intent(HostActivity.this, MainActivity.class));
+            finish();
             return;
         }
         GastoHospedagemModel gasto = new GastoHospedagemDAO(HostActivity.this).SelectByViagem(viagem);
@@ -52,6 +58,9 @@ public class HostActivity extends AppCompatActivity {
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(HostActivity.this, TravelActivity.class);
+                intent.putExtra("travel", viagem.getId());
+                startActivity(intent);
                 finish();
             }
         });
@@ -67,7 +76,8 @@ public class HostActivity extends AppCompatActivity {
                     custo += "0";
                 }
                 gasto.setCusto_noite(Double.parseDouble(custo));
-                txtTotal.setText(String.valueOf(gasto.calcularGastoHospedagem()));
+                txtTotal.setText(decimalFormat.format(gasto.calcularGastoHospedagem()));
+
             }
 
             @Override
@@ -85,7 +95,7 @@ public class HostActivity extends AppCompatActivity {
                     custo += "0";
                 }
                 gasto.setNoites(Integer.parseInt(custo));
-                txtTotal.setText(String.valueOf(gasto.calcularGastoHospedagem()));
+                txtTotal.setText(decimalFormat.format(gasto.calcularGastoHospedagem()));
             }
 
             @Override
@@ -103,7 +113,7 @@ public class HostActivity extends AppCompatActivity {
                     custo += "0";
                 }
                 gasto.setQuartos(Integer.parseInt(custo));
-                txtTotal.setText(String.valueOf(gasto.calcularGastoHospedagem()));
+                txtTotal.setText(decimalFormat.format(gasto.calcularGastoHospedagem()));
             }
 
             @Override
@@ -129,10 +139,19 @@ public class HostActivity extends AppCompatActivity {
                     Toast.makeText(HostActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(HostActivity.this, "Informações atualizadas com sucesso!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(HostActivity.this, TravelActivity.class);
+                    intent.putExtra("travel", viagem.getId());
+                    startActivity(intent);
                     finish();
                 }
             }
         });
     }
-
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(HostActivity.this, TravelActivity.class);
+        intent.putExtra("travel", viagem.getId());
+        startActivity(intent);
+        finish();
+    }
 }

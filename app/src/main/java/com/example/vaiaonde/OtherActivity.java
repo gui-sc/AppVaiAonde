@@ -32,6 +32,7 @@ public class OtherActivity extends AppCompatActivity {
     private OtherItemAdapter otherItemAdapter;
     private EditText txtDescricao, txtValor;
     private Button btnSalvar, btnApagar, btnLimpar, btnVoltar;
+    private ViagensModel viagem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +50,7 @@ public class OtherActivity extends AppCompatActivity {
             finish();
             return;
         }
-        ViagensModel viagem = new ViagensDAO(OtherActivity.this).selectById(id);
+        viagem = new ViagensDAO(OtherActivity.this).selectById(id);
         if(viagem == null){
             startActivity(new Intent(OtherActivity.this, MainActivity.class));
             finish();
@@ -147,6 +148,9 @@ public class OtherActivity extends AppCompatActivity {
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(OtherActivity.this, TravelActivity.class);
+                intent.putExtra("travel", viagem.getId());
+                startActivity(intent);
                 finish();
             }
         });
@@ -162,5 +166,12 @@ public class OtherActivity extends AppCompatActivity {
         txtValor.setText(decimalFormat.format(gasto.getValor()));
 
         return gasto;
+    }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(OtherActivity.this, TravelActivity.class);
+        intent.putExtra("travel", viagem.getId());
+        startActivity(intent);
+        finish();
     }
 }

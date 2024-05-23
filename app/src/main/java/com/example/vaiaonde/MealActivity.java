@@ -17,13 +17,15 @@ import com.example.vaiaonde.database.dao.ViagensDAO;
 import com.example.vaiaonde.database.model.GastoRefeicoesModel;
 import com.example.vaiaonde.database.model.ViagensModel;
 
+import java.text.DecimalFormat;
+
 public class MealActivity extends AppCompatActivity {
 
 
     private Button btnVoltar, btnSalvar;
     private EditText txtCustoRefeicao, txtRefeicoes;
     private TextView txtTotal;
-
+    private ViagensModel viagem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,13 +35,14 @@ public class MealActivity extends AppCompatActivity {
         txtCustoRefeicao = findViewById(R.id.txtCustoRefeicao);
         txtRefeicoes = findViewById(R.id.txtRefeicoes);
         txtTotal = findViewById(R.id.txtTotal);
+        DecimalFormat decimalFormat = new DecimalFormat("0.##");
         long viagemId = getIntent().getLongExtra("travel", 0);
         if(viagemId == 0){
             startActivity(new Intent(MealActivity.this, MainActivity.class));
             finish();
             return;
         }
-        ViagensModel viagem = new ViagensDAO(MealActivity.this).selectById(viagemId);
+        viagem = new ViagensDAO(MealActivity.this).selectById(viagemId);
         if(viagem == null){
             startActivity(new Intent(MealActivity.this, MainActivity.class));
             finish();
@@ -49,6 +52,9 @@ public class MealActivity extends AppCompatActivity {
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(MealActivity.this, TravelActivity.class);
+                intent.putExtra("travel", viagem.getId());
+                startActivity(intent);
                 finish();
             }
         });
@@ -67,7 +73,7 @@ public class MealActivity extends AppCompatActivity {
                     custo += "0";
                 }
                 gasto.setCusto_refeicao(Double.parseDouble(custo));
-                txtTotal.setText(String.valueOf(gasto.calcularParcial()));
+                txtTotal.setText(decimalFormat.format(gasto.calcularParcial()));
             }
 
             @Override
@@ -85,7 +91,7 @@ public class MealActivity extends AppCompatActivity {
                     custo = "0";
                 }
                 gasto.setRefeicoes_dia(Integer.parseInt(custo));
-                txtTotal.setText(String.valueOf(gasto.calcularParcial()));
+                txtTotal.setText(decimalFormat.format(gasto.calcularParcial()));
             }
 
             @Override
@@ -111,9 +117,20 @@ public class MealActivity extends AppCompatActivity {
                     Toast.makeText(MealActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(MealActivity.this, "Informações atualizadas com sucesso!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MealActivity.this, TravelActivity.class);
+                    intent.putExtra("travel", viagem.getId());
+                    startActivity(intent);
                     finish();
                 }
             }
         });
+
+    }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(MealActivity.this, TravelActivity.class);
+        intent.putExtra("travel", viagem.getId());
+        startActivity(intent);
+        finish();
     }
 }

@@ -22,6 +22,7 @@ public class NewTravelActivity extends AppCompatActivity {
     private EditText txtDestino, txtDias, txtPessoas;
     private Button btnSalvar, btnVoltar;
     private TextView lblScreenName;
+    private long viagem_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,7 @@ public class NewTravelActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_travel);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(NewTravelActivity.this);
         long usuario_id = preferences.getLong(Shared.KEY_USUARIO_ID, 0);
-        long viagem_id = getIntent().getLongExtra("travel", 0);
+        viagem_id = getIntent().getLongExtra("travel", 0);
 
         if(usuario_id == 0){
             startActivity(new Intent(NewTravelActivity.this, LoginActivity.class));
@@ -61,6 +62,13 @@ public class NewTravelActivity extends AppCompatActivity {
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(viagem_id == 0){
+                    startActivity(new Intent(NewTravelActivity.this, MainActivity.class));
+                }else{
+                    Intent intent = new Intent(NewTravelActivity.this, TravelActivity.class);
+                    intent.putExtra("travel", viagem_id);
+                    startActivity(intent);
+                }
                 finish();
             }
         });
@@ -96,6 +104,7 @@ public class NewTravelActivity extends AppCompatActivity {
                             Intent intent = new Intent(NewTravelActivity.this, TravelActivity.class);
                             intent.putExtra("travel", retorno);
                             startActivity(intent);
+                            finish();
                         }
                     }else{
                         finalViagem.setPessoas(pessoas);
@@ -110,6 +119,7 @@ public class NewTravelActivity extends AppCompatActivity {
                             Intent intent = new Intent(NewTravelActivity.this, TravelActivity.class);
                             intent.putExtra("travel", finalViagem.getId());
                             startActivity(intent);
+                            finish();
                         }
                     }
 
@@ -117,5 +127,16 @@ public class NewTravelActivity extends AppCompatActivity {
                 
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        if(viagem_id == 0){
+            startActivity(new Intent(NewTravelActivity.this, MainActivity.class));
+        }else{
+            Intent intent = new Intent(NewTravelActivity.this, TravelActivity.class);
+            intent.putExtra("travel", viagem_id);
+            startActivity(intent);
+        }
+        finish();
     }
 }

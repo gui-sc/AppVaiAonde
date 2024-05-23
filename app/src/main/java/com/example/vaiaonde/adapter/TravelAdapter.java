@@ -70,6 +70,7 @@ public class TravelAdapter extends BaseAdapter {
                 }
                 intent.putExtra("travel", travel.getId());
                 startActivity(context, intent, null);
+                activity.finish();
             }
         });
 

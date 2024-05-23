@@ -30,6 +30,7 @@ public class ResumeActivity extends AppCompatActivity {
             txtRefeicoes, txtAerea, txtHospedagem, txtGasolina, txtOutros, txtTotal, txtTotalPessoa;
     private TextView lblRefeicoes, lblAerea, lblHospedagem, lblGasolina, lblOutros;
     private Button btnApagar, btnVoltar;
+    private ViagensModel viagem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +61,7 @@ public class ResumeActivity extends AppCompatActivity {
             finish();
             return;
         }
-        ViagensModel viagem = new ViagensDAO(ResumeActivity.this).selectById(id);
+        viagem = new ViagensDAO(ResumeActivity.this).selectById(id);
         if(viagem == null){
             startActivity(new Intent(ResumeActivity.this, MainActivity.class));
             finish();
@@ -91,12 +92,35 @@ public class ResumeActivity extends AppCompatActivity {
                 gastoRefeicoes.calcularCustoTotalRefeicoes() +
                 gastoAereo.calcularCustoTotal() +
                 totalDiversos;
-        txtTotal.setText(decimalFormat.format(total));
+        String formatted = decimalFormat.format(total);
+        formatted = formatted.replace(".",",");
+        if(formatted.split(",").length == 1){
+            formatted += ",00";
+        }
+        if(formatted.split(",")[1].length() == 1){
+            formatted += "0";
+        }
+        txtTotal.setText(formatted);
         double totalPessoa = total / Double.parseDouble(String.valueOf(viagem.getPessoas()));
-        txtTotalPessoa.setText(decimalFormat.format(totalPessoa));
+        formatted = decimalFormat.format(totalPessoa);
+        formatted = formatted.replace(".",",");
+        if(formatted.split(",").length == 1){
+            formatted += ",00";
+        }
+        if(formatted.split(",")[1].length() == 1){
+            formatted += "0";
+        }
+        txtTotalPessoa.setText(formatted);
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(viagem.getAtiva()){
+                    Intent intent = new Intent(ResumeActivity.this, TravelActivity.class);
+                    intent.putExtra("travel", viagem.getId());
+                    startActivity(intent);
+                }else{
+                    startActivity(new Intent(ResumeActivity.this, MainActivity.class));
+                }
                 finish();
             }
         });
@@ -122,7 +146,27 @@ public class ResumeActivity extends AppCompatActivity {
             txt.setVisibility(View.GONE);
             lbl.setVisibility(View.GONE);
         }else{
-            txt.setText(decimalFormat.format(valor));
+            String formatted = decimalFormat.format(valor);
+            formatted = formatted.replace(".",",");
+            if(formatted.split(",").length == 1){
+                formatted += ",00";
+            }
+            if(formatted.split(",")[1].length() == 1){
+                formatted += "0";
+            }
+            txt.setText(formatted);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(viagem.getAtiva()){
+            Intent intent = new Intent(ResumeActivity.this, TravelActivity.class);
+            intent.putExtra("travel", viagem.getId());
+            startActivity(intent);
+        }else{
+            startActivity(new Intent(ResumeActivity.this, MainActivity.class));
+        }
+        finish();
     }
 }

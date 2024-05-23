@@ -24,6 +24,7 @@ public class PlaneActivity extends AppCompatActivity {
     private EditText txtAluguel, txtCustoPessoa;
     private TextView txtTotal;
     private Button btnVoltar, btnSalvar;
+    private ViagensModel viagem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +35,8 @@ public class PlaneActivity extends AppCompatActivity {
         txtAluguel = findViewById(R.id.txtAluguel);
         txtCustoPessoa = findViewById(R.id.txtCustoPessoa);
         long id = getIntent().getLongExtra("travel", 0);
-        ViagensModel viagem = new ViagensDAO(PlaneActivity.this).selectById(id);
+        viagem = new ViagensDAO(PlaneActivity.this).selectById(id);
+
         if(viagem == null){
             startActivity(new Intent(PlaneActivity.this, MainActivity.class));
             finish();
@@ -76,7 +78,7 @@ public class PlaneActivity extends AppCompatActivity {
                     custo += "0";
                 }
                 gasto.setAluguel_veiculo(Double.parseDouble(custo));
-                txtTotal.setText(String.valueOf(gasto.calcularCustoTotal()));
+                txtTotal.setText(decimalFormat.format(gasto.calcularCustoTotal()));
             }
 
             @Override
@@ -85,6 +87,9 @@ public class PlaneActivity extends AppCompatActivity {
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(PlaneActivity.this, TravelActivity.class);
+                intent.putExtra("travel", viagem.getId());
+                startActivity(intent);
                 finish();
             }
         });
@@ -107,9 +112,19 @@ public class PlaneActivity extends AppCompatActivity {
                     Toast.makeText(PlaneActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(PlaneActivity.this, "Informações atualizadas com sucesso!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(PlaneActivity.this, TravelActivity.class);
+                    intent.putExtra("travel", viagem.getId());
+                    startActivity(intent);
                     finish();
                 }
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(PlaneActivity.this, TravelActivity.class);
+        intent.putExtra("travel", viagem.getId());
+        startActivity(intent);
+        finish();
     }
 }

@@ -22,13 +22,13 @@ public class MainActivity extends AppCompatActivity {
     private TravelAdapter travelActiveAdapter,travelFinishedAdapter;
     private ListView travelListActiveView, travelListFinishedView;
     private Button btnNovaViagem, btnSair;
-
+    private SharedPreferences.Editor edit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        SharedPreferences.Editor edit = preferences.edit();
+        edit = preferences.edit();
         long usuario_id = preferences.getLong(Shared.KEY_USUARIO_ID, 0);
         if(usuario_id == 0){
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, NewTravelActivity.class));
+                finish();
             }
         });
         btnSair.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         travelFinishedAdapter = new TravelAdapter(MainActivity.this, MainActivity.this);
         travelFinishedAdapter.setItems(travelFinishedList);
         travelListFinishedView.setAdapter(travelFinishedAdapter);
-
 
     }
 }
