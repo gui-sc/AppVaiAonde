@@ -147,9 +147,7 @@ public class OtherActivity extends AppCompatActivity {
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(OtherActivity.this, TravelActivity.class);
-                intent.putExtra("travel", viagem.getId());
-                startActivity(intent);
+                finish();
             }
         });
         listGastosDiversos = new GastoDiversosDAO(OtherActivity.this).SelectAll(viagem);

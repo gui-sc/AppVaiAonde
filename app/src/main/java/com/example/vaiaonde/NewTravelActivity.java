@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import com.example.vaiaonde.shared.Shared;
 public class NewTravelActivity extends AppCompatActivity {
     private EditText txtDestino, txtDias, txtPessoas;
     private Button btnSalvar, btnVoltar;
+    private TextView lblScreenName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,22 +47,24 @@ public class NewTravelActivity extends AppCompatActivity {
         txtDias = findViewById(R.id.txtDias);
         txtPessoas = findViewById(R.id.txtPessoas);
         txtDestino = findViewById(R.id.txtDestino);
+        lblScreenName = findViewById(R.id.lblScreenName);
         ViagensModel viagem = null;
         if(viagem_id != 0){
             viagem = new ViagensDAO(NewTravelActivity.this).selectById(viagem_id);
             txtDestino.setText(viagem.getDestino());
             txtPessoas.setText(String.valueOf(viagem.getPessoas()));
             txtDias.setText(String.valueOf(viagem.getDias()));
+            lblScreenName.setText(R.string.editar_viagem);
         }
+        ViagensModel finalViagem = viagem;
+
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(NewTravelActivity.this, MainActivity.class));
                 finish();
             }
         });
 
-        ViagensModel finalViagem = viagem;
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,7 +96,6 @@ public class NewTravelActivity extends AppCompatActivity {
                             Intent intent = new Intent(NewTravelActivity.this, TravelActivity.class);
                             intent.putExtra("travel", retorno);
                             startActivity(intent);
-                            finish();
                         }
                     }else{
                         finalViagem.setPessoas(pessoas);
@@ -105,9 +108,8 @@ public class NewTravelActivity extends AppCompatActivity {
                         }else{
                             Toast.makeText(NewTravelActivity.this, "Viagem atualizada com sucesso!", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(NewTravelActivity.this, TravelActivity.class);
-                            intent.putExtra("travel", retorno);
+                            intent.putExtra("travel", finalViagem.getId());
                             startActivity(intent);
-                            finish();
                         }
                     }
 

@@ -49,9 +49,6 @@ public class MealActivity extends AppCompatActivity {
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MealActivity.this, TravelActivity.class);
-                intent.putExtra("travel", viagem.getId());
-                startActivity(intent);
                 finish();
             }
         });
@@ -114,9 +111,6 @@ public class MealActivity extends AppCompatActivity {
                     Toast.makeText(MealActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(MealActivity.this, "Informações atualizadas com sucesso!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MealActivity.this, TravelActivity.class);
-                    intent.putExtra("travel", gasto.getViagem().getId());
-                    startActivity(intent);
                     finish();
                 }
             }

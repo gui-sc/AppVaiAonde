@@ -151,6 +151,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="45"
+            android:textSize="20sp"
             android:backgroundTint="@color/primary"
             android:fontFamily="@string/font"
             android:text="@string/voltar"/>
@@ -163,6 +164,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="45"
+            android:textSize="20sp"
             android:backgroundTint="@color/primary"
             android:fontFamily="@string/font"
             android:text="@string/salvar"/>

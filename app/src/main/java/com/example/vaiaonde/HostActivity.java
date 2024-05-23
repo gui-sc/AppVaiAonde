@@ -52,10 +52,7 @@ public class HostActivity extends AppCompatActivity {
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HostActivity.this, TravelActivity.class);
-                intent.putExtra("destino", viagem.getDestino());
-                intent.putExtra("travel", viagem.getId());
-                startActivity(intent);
+                finish();
             }
         });
         txtCustoPorNoite.addTextChangedListener(new TextWatcher() {
@@ -132,9 +129,7 @@ public class HostActivity extends AppCompatActivity {
                     Toast.makeText(HostActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(HostActivity.this, "Informações atualizadas com sucesso!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(HostActivity.this, TravelActivity.class);
-                    intent.putExtra("travel", gasto.getViagem().getId());
-                    startActivity(intent);
+                    finish();
                 }
             }
         });

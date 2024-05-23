@@ -85,9 +85,6 @@ public class PlaneActivity extends AppCompatActivity {
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PlaneActivity.this, TravelActivity.class);
-                intent.putExtra("travel", viagem.getId());
-                startActivity(intent);
                 finish();
             }
         });
@@ -110,9 +107,6 @@ public class PlaneActivity extends AppCompatActivity {
                     Toast.makeText(PlaneActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(PlaneActivity.this, "Informações atualizadas com sucesso!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(PlaneActivity.this, TravelActivity.class);
-                    intent.putExtra("travel", gasto.getViagem().getId());
-                    startActivity(intent);
                     finish();
                 }
             }

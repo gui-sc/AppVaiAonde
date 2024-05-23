@@ -62,7 +62,6 @@ public class TravelActivity extends AppCompatActivity {
                 Intent intent = new Intent(TravelActivity.this, MealActivity.class);
                 intent.putExtra("travel", viagem.getId());
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -72,7 +71,6 @@ public class TravelActivity extends AppCompatActivity {
                 Intent intent = new Intent(TravelActivity.this, HostActivity.class);
                 intent.putExtra("travel", viagem.getId());
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -82,7 +80,6 @@ public class TravelActivity extends AppCompatActivity {
                 Intent intent = new Intent(TravelActivity.this, FuelActivity.class);
                 intent.putExtra("travel", viagem.getId());
                 startActivity(intent);
-                finish();
             }
         });
         btnAviao.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +88,6 @@ public class TravelActivity extends AppCompatActivity {
                 Intent intent = new Intent(TravelActivity.this, PlaneActivity.class);
                 intent.putExtra("travel", viagem.getId());
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -101,7 +97,6 @@ public class TravelActivity extends AppCompatActivity {
                 Intent intent = new Intent(TravelActivity.this, OtherActivity.class);
                 intent.putExtra("travel", viagem.getId());
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -119,7 +114,6 @@ public class TravelActivity extends AppCompatActivity {
                 Intent intent = new Intent(TravelActivity.this, ResumeActivity.class);
                 intent.putExtra("travel", viagem.getId());
                 startActivity(intent);
-                finish();
             }
         });
         btnApagar.setOnClickListener(new View.OnClickListener() {
@@ -161,7 +155,6 @@ public class TravelActivity extends AppCompatActivity {
                 Intent intent = new Intent(TravelActivity.this, NewTravelActivity.class);
                 intent.putExtra("travel", viagem.getId());
                 startActivity(intent);
-                finish();
             }
         });
     }

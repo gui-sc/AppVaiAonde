@@ -45,6 +45,7 @@
     <Button
         android:id="@+id/btnLimpar"
         android:layout_marginTop="10dp"
+        android:textSize="20sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/limpar"
@@ -54,6 +55,7 @@
         android:id="@+id/btnSalvar"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
+        android:textSize="20sp"
         android:layout_height="wrap_content"
         android:text="@string/salvar"
         android:fontFamily="@string/font"
@@ -64,6 +66,7 @@
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="20sp"
         android:text="@string/apagar"
         android:fontFamily="@string/font"
         android:backgroundTint="@color/danger"/>
@@ -84,8 +87,7 @@
     android:id="@+id/btnVoltar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textColor="@color/text"
-    android:textSize="25sp"
+    android:textSize="20sp"
     android:fontFamily="@string/font"
     android:backgroundTint="@color/primary"
     android:text="@string/voltar"/>

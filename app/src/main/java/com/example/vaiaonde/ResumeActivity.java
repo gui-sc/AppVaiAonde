@@ -97,14 +97,6 @@ public class ResumeActivity extends AppCompatActivity {
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(viagem.getAtiva()){
-                    Intent intent = new Intent(ResumeActivity.this, TravelActivity.class);
-                    intent.putExtra("travel", viagem.getId());
-                    startActivity(intent);
-                }else{
-                    startActivity(new Intent(ResumeActivity.this, MainActivity.class));
-                }
-
                 finish();
             }
         });

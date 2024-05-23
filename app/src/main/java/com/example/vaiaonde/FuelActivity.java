@@ -55,9 +55,7 @@ public class FuelActivity extends AppCompatActivity {
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FuelActivity.this, TravelActivity.class);
-                intent.putExtra("travel", viagem.getId());
-                startActivity(intent);
+                finish();
             }
         });
         txtTotalKm.addTextChangedListener(new TextWatcher() {
@@ -151,9 +149,7 @@ public class FuelActivity extends AppCompatActivity {
                     Toast.makeText(FuelActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(FuelActivity.this, "Informações atualizadas com sucesso!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(FuelActivity.this, TravelActivity.class);
-                    intent.putExtra("travel", gasto.getViagem().getId());
-                    startActivity(intent);
+                    finish();
                 }
             }
         });

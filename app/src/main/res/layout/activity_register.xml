@@ -92,6 +92,7 @@
             android:layout_marginHorizontal="25dp"
             android:backgroundTint="@color/primary"
             android:text="@string/cadastrar"
+            android:textSize="20sp"
             android:fontFamily="@string/font"
             android:layout_marginBottom="10dp"/>
 
