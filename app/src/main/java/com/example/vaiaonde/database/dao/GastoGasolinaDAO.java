@@ -119,8 +119,8 @@ public class GastoGasolinaDAO extends AbstrataDao {
             Cursor cursor = db.query(
                     GastoGasolinaModel.TABELA_NOME,
                     colunas,
-                    null,
-                    null,
+                    GastoHospedagemModel.COLUNA_VIAGEM_ID + " = ?",
+                    new String[]{String.valueOf(viagensModel.getId())},
                     null,
                     null,
                     null

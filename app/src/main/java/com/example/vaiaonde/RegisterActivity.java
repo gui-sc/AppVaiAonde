@@ -57,7 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
-                if(email.contains(" ")){
+                if(email.contains(" ") || !email.contains("@") || !email.endsWith(".com") || !email.endsWith(".br")){
                     Toast.makeText(RegisterActivity.this, "Email inválido!", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -65,6 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if(new UsuariosDAO(RegisterActivity.this).UserExists(email)){
                     Toast.makeText(RegisterActivity.this, "Já existe um usuário com este email!", Toast.LENGTH_SHORT).show();
                 }
+
                 if(password.length() < 6){
                     Toast.makeText(RegisterActivity.this, "A senha precisa conter pelo menos 6 caracteres.", Toast.LENGTH_SHORT).show();
                     return;
