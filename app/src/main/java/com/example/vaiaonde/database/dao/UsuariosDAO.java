@@ -3,6 +3,7 @@ package com.example.vaiaonde.database.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 
 import com.example.vaiaonde.database.DBOpenHelper;
 import com.example.vaiaonde.database.model.UsuariosModel;
@@ -135,6 +136,24 @@ public class UsuariosDAO extends AbstrataDao {
             Close();
         }
         return null;
+    }
+
+    public boolean UserExists(String email){
+        try{
+            Open();
+            Cursor cursor = db.query(UsuariosModel.TABELA_NOME,
+                    colunas,
+                    UsuariosModel.COLUNA_EMAIL + " = ?",
+                    new String[]{email},
+                    null,
+                    null,
+                    null);
+
+            return cursor.moveToFirst();
+        }
+        finally {
+            Close();
+        }
     }
 
     public ArrayList<UsuariosModel> SelectAll() {

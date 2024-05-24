@@ -51,13 +51,19 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = txtEmail.getText().toString();
                 String password = txtPassword.getText().toString();
+
                 if(email.trim().isEmpty()  || password.trim().isEmpty()){
                     Toast.makeText(RegisterActivity.this, "Email e senha não podem ser vazios!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 if(email.contains(" ")){
                     Toast.makeText(RegisterActivity.this, "Email inválido!", Toast.LENGTH_SHORT).show();
                     return;
+                }
+
+                if(new UsuariosDAO(RegisterActivity.this).UserExists(email)){
+                    Toast.makeText(RegisterActivity.this, "Já existe um usuário com este email!", Toast.LENGTH_SHORT).show();
                 }
                 if(password.length() < 6){
                     Toast.makeText(RegisterActivity.this, "A senha precisa conter pelo menos 6 caracteres.", Toast.LENGTH_SHORT).show();
