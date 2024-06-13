@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NewTravelActivity"
+    android:orientation="vertical"
+    android:background="@color/background"
+    android:padding="40dp">
+
+    <TextView
+        android:id="@+id/lblScreenName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:fontFamily="@string/font"
+        android:textColor="@color/text"
+        android:layout_marginBottom="40dp"
+        android:text="@string/nova_viagem"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/destino"
+        android:fontFamily="@string/font"
+        android:textSize="20sp"
+        android:textColor="@color/text"/>
+    <EditText
+        android:id="@+id/txtDestino"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/sao_paulo"
+        android:layout_marginBottom="15dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dias_de_viagem"
+        android:fontFamily="@string/font"
+        android:textSize="20sp"
+        android:textColor="@color/text"/>
+    <EditText
+        android:id="@+id/txtDias"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="@string/_7"
+        android:layout_marginBottom="15dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/total_de_pessoas"
+        android:fontFamily="@string/font"
+        android:textSize="20sp"
+        android:textColor="@color/text"/>
+    <EditText
+        android:id="@+id/txtPessoas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="@string/_4"
+        android:layout_marginBottom="15dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="100"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnVoltar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="45"
+            android:textSize="20sp"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="@string/font"
+            android:text="@string/voltar"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"/>
+        <Button
+            android:id="@+id/btnSalvar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="45"
+            android:textSize="20sp"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="@string/font"
+            android:text="@string/salvar"/>
+    </LinearLayout>
+
+
+</LinearLayout>
