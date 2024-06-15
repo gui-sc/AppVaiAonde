@@ -3,14 +3,16 @@ package com.example.vaiaonde.database.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.widget.Toast;
 
-import com.example.vaiaonde.NewTravelActivity;
 import com.example.vaiaonde.api.API;
+import com.example.vaiaonde.api.ArrayViagemCallback;
+import com.example.vaiaonde.api.response.Respostas;
 import com.example.vaiaonde.database.DBOpenHelper;
-import com.example.vaiaonde.database.model.GastoRefeicoesModel;
 import com.example.vaiaonde.database.model.ViagensModel;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -99,7 +101,7 @@ public class ViagensDAO extends AbstrataDao {
             values.put(ViagensModel.COLUNA_PESSOAS, viagem.getPessoas());
             values.put(ViagensModel.COLUNA_DIAS, viagem.getDias());
             values.put(ViagensModel.COLUNA_ATIVA, viagem.getAtiva() ? 1 : 0);
-            values.put(ViagensModel.COLUNA_USUARIO_ID, viagem.getUsuariosModel().getId());
+            values.put(ViagensModel.COLUNA_USUARIO_ID, viagem.getUsuario());
 
             linhasAfetadas = db.update(
                     ViagensModel.TABELA_NOME,
@@ -131,6 +133,26 @@ public class ViagensDAO extends AbstrataDao {
         }
 
         return linhasAfetadas;
+    }
+
+    public int isActive(long id){
+        try{
+            Open();
+            Cursor cursor = db.query(ViagensModel.TABELA_NOME,
+                    colunas,
+                    ViagensModel.COLUNA_ID + " = ?",
+                    new String[]{String.valueOf(id)},
+                    null,
+                    null,
+                    null);
+
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(4) == 1 ? 1 : 2;
+            }
+        } finally {
+            Close();
+        }
+        return 3;
     }
 
     public ViagensModel selectById(long id){
@@ -165,6 +187,52 @@ public class ViagensDAO extends AbstrataDao {
             Close();
         }
         return viagem;
+    }
+
+    public void SelectAllApi(long usuario_id, boolean active, ArrayViagemCallback callback){
+        ArrayList<ViagensModel> viagensFiltradas = new ArrayList<>();
+        API.listViagem(new Callback<ArrayList<ViagensModel>>() {
+            @Override
+            public void onResponse(Call<ArrayList<ViagensModel>> call, Response<ArrayList<ViagensModel>> response) {
+                if (response != null && response.isSuccessful()) {
+                    ArrayList<ViagensModel> todasViagens = response.body();
+                    long totalViagens = todasViagens.stream()
+                            .filter(v -> v.getUsuario() == usuario_id)
+                            .count();
+                    AtomicInteger processedCount = new AtomicInteger(0);
+                    for (ViagensModel viagem : todasViagens) {
+                        if (viagem.getUsuario() == usuario_id) {
+                            // Chamar a função SelectById e verificar o status
+                            int isActive = isActive(viagem.getId());
+                            if(isActive != 3){
+                                if(active && isActive == 1){
+                                    viagem.setAtiva(true);
+                                    viagensFiltradas.add(viagem);
+                                }
+                                if(!active && isActive == 2){
+                                    viagem.setAtiva(false);
+                                    viagensFiltradas.add(viagem);
+                                }
+                            }
+
+                            if (processedCount.incrementAndGet() == totalViagens) {
+                                // Quando todas as viagens forem processadas, chame o callback
+                                callback.onSuccess(viagensFiltradas);
+                            }
+
+                        }
+                    }
+
+                }else{
+                    callback.onFailure(new Exception("Erro na resposta da API"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<ViagensModel>> call, Throwable t) {
+                callback.onFailure(new Exception(t));
+            }
+        });
     }
 
     public ArrayList<ViagensModel> SelectAll(long usuario_id, boolean active) {

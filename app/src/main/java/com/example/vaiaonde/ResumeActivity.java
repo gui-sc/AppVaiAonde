@@ -1,6 +1,7 @@
 package com.example.vaiaonde;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,6 +10,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.vaiaonde.adapter.OtherItemAdapter;
+import com.example.vaiaonde.api.API;
+import com.example.vaiaonde.api.ViagemCallback;
 import com.example.vaiaonde.database.dao.GastoAereoDAO;
 import com.example.vaiaonde.database.dao.GastoDiversosDAO;
 import com.example.vaiaonde.database.dao.GastoGasolinaDAO;
@@ -24,6 +28,11 @@ import com.example.vaiaonde.database.model.ViagensModel;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ResumeActivity extends AppCompatActivity {
     private TextView txtDestino, txtDias, txtPessoas,
@@ -61,56 +70,86 @@ public class ResumeActivity extends AppCompatActivity {
             finish();
             return;
         }
-        viagem = new ViagensDAO(ResumeActivity.this).selectById(id);
-        if(viagem == null){
-            startActivity(new Intent(ResumeActivity.this, MainActivity.class));
-            finish();
-            return;
-        }
-        txtDestino.setText(viagem.getDestino());
-        txtDias.setText(String.valueOf(viagem.getDias()));
-        txtPessoas.setText(String.valueOf(viagem.getPessoas()));
-        GastoHospedagemModel gastoHospedagem = new GastoHospedagemDAO(ResumeActivity.this).SelectByViagem(viagem);
-        GastoGasolinaModel gastoGasolina = new GastoGasolinaDAO(ResumeActivity.this).SelectByViagem(viagem);
-        GastoRefeicoesModel gastoRefeicoes = new GastoRefeicoesDAO(ResumeActivity.this).SelectByViagem(viagem);
-        GastoAereoModel gastoAereo = new GastoAereoDAO(ResumeActivity.this).SelectByViagem(viagem);
-        ArrayList<GastoDiversosModel> gastoDiversos = new GastoDiversosDAO(ResumeActivity.this).SelectAll(viagem);
 
-        DecimalFormat decimalFormat = new DecimalFormat("0.##");
-        setText(txtHospedagem, lblHospedagem, gastoHospedagem.calcularGastoHospedagem(), decimalFormat);
-        setText(txtGasolina, lblGasolina, gastoGasolina.calcularCustoTotal(), decimalFormat);
-        setText(txtRefeicoes, lblRefeicoes, gastoRefeicoes.calcularCustoTotalRefeicoes(), decimalFormat);
-        setText(txtAerea, lblAerea, gastoAereo.calcularCustoTotal(), decimalFormat);
-        double totalDiversos = 0;
-        for (int i = 0; i < gastoDiversos.size(); i++) {
-            totalDiversos += gastoDiversos.get(i).getValor();
-        }
+        SweetAlertDialog pDialogSearch = new SweetAlertDialog(ResumeActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialogSearch.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialogSearch.setTitleText("Aguarde");
+        pDialogSearch.setContentText("Buscando dados do servidor ...");
+        pDialogSearch.setCancelable(false);
+        pDialogSearch.show();
 
-        setText(txtOutros, lblOutros, totalDiversos, decimalFormat);
-        double total = gastoHospedagem.calcularGastoHospedagem() +
-                gastoGasolina.calcularCustoTotal() +
-                gastoRefeicoes.calcularCustoTotalRefeicoes() +
-                gastoAereo.calcularCustoTotal() +
-                totalDiversos;
-        String formatted = decimalFormat.format(total);
-        formatted = formatted.replace(".",",");
-        if(formatted.split(",").length == 1){
-            formatted += ",00";
-        }
-        if(formatted.split(",")[1].length() == 1){
-            formatted += "0";
-        }
-        txtTotal.setText(formatted);
-        double totalPessoa = total / Double.parseDouble(String.valueOf(viagem.getPessoas()));
-        formatted = decimalFormat.format(totalPessoa);
-        formatted = formatted.replace(".",",");
-        if(formatted.split(",").length == 1){
-            formatted += ",00";
-        }
-        if(formatted.split(",")[1].length() == 1){
-            formatted += "0";
-        }
-        txtTotalPessoa.setText(formatted);
+        getViagem(Integer.parseInt(String.valueOf(id)), new ViagemCallback() {
+            @Override
+            public void onSuccess(ViagensModel viagemResponse) {
+                // Acesso seguro ao objeto Viagem
+                viagem = viagemResponse;
+                txtDestino.setText(viagem.getDestino());
+                txtDias.setText(String.valueOf(viagem.getDias()));
+                txtPessoas.setText(String.valueOf(viagem.getPessoas()));
+                GastoHospedagemModel gastoHospedagem = viagem.getHospedagem();
+                GastoGasolinaModel gastoGasolina = viagem.getGasolina();
+                GastoRefeicoesModel gastoRefeicoes = viagem.getRefeicao();
+                gastoRefeicoes.setViagem(viagem);
+                GastoAereoModel gastoAereo = viagem.getAereo();
+                gastoAereo.setViagem(viagem);
+                ArrayList<GastoDiversosModel> gastoDiversos = viagem.getDiversos();
+                DecimalFormat decimalFormat = new DecimalFormat("0.##");
+                setText(txtHospedagem, lblHospedagem, gastoHospedagem.calcularGastoHospedagem(), decimalFormat);
+                setText(txtGasolina, lblGasolina, gastoGasolina.calcularCustoTotal(), decimalFormat);
+                setText(txtRefeicoes, lblRefeicoes, gastoRefeicoes.calcularCustoTotalRefeicoes(), decimalFormat);
+                setText(txtAerea, lblAerea, gastoAereo.calcularCustoTotal(), decimalFormat);
+                double totalDiversos = 0;
+                for (int i = 0; i < gastoDiversos.size(); i++) {
+                    totalDiversos += gastoDiversos.get(i).getValor();
+                }
+
+                setText(txtOutros, lblOutros, totalDiversos, decimalFormat);
+                double total = gastoHospedagem.calcularGastoHospedagem() +
+                        gastoGasolina.calcularCustoTotal() +
+                        gastoRefeicoes.calcularCustoTotalRefeicoes() +
+                        gastoAereo.calcularCustoTotal() +
+                        totalDiversos;
+
+                String formatted = decimalFormat.format(total);
+                formatted = formatted.replace(".",",");
+                if(formatted.split(",").length == 1){
+                    formatted += ",00";
+                }
+                if(formatted.split(",")[1].length() == 1){
+                    formatted += "0";
+                }
+                txtTotal.setText(formatted);
+                double totalPessoa = total / Double.parseDouble(String.valueOf(viagem.getPessoas()));
+                formatted = decimalFormat.format(totalPessoa);
+                formatted = formatted.replace(".",",");
+                if(formatted.split(",").length == 1){
+                    formatted += ",00";
+                }
+                if(formatted.split(",")[1].length() == 1){
+                    formatted += "0";
+                }
+                txtTotalPessoa.setText(formatted);
+                pDialogSearch.dismissWithAnimation();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                pDialogSearch.dismissWithAnimation();
+                new SweetAlertDialog(ResumeActivity.this, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Erro")
+                        .setContentText("Erro ao buscar dados do banco de dados, tente novamente mais tarde.")
+                        .setContentText("OK")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                startActivity(new Intent(ResumeActivity.this, MainActivity.class));
+                                finish();
+                            }
+                        })
+                        .show();
+            }
+        });
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,6 +176,28 @@ public class ResumeActivity extends AppCompatActivity {
 
                 startActivity(new Intent(ResumeActivity.this, MainActivity.class));
                 finish();
+            }
+        });
+    }
+
+    private void getViagem(int id, ViagemCallback callback) {
+        // Chama a API para obter a viagem
+        API.getViagem(id, new Callback<ViagensModel>() {
+            @Override
+            public void onResponse(Call<ViagensModel> call, Response<ViagensModel> response) {
+                if (response != null && response.isSuccessful()) {
+                    ViagensModel viagem = response.body();
+                    int isActive = new ViagensDAO(ResumeActivity.this).isActive(viagem.getId());
+                    viagem.setAtiva(isActive == 1);
+                    callback.onSuccess(viagem); // Chama o callback de sucesso
+                } else {
+                    callback.onFailure(new Exception("Resposta não bem-sucedida"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ViagensModel> call, Throwable t) {
+                callback.onFailure(t); // Chama o callback de falha
             }
         });
     }

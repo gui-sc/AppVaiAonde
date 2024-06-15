@@ -37,7 +37,6 @@ public class GastoDiversosModel implements Serializable {
     public GastoDiversosModel(){}
 
     public GastoDiversosModel(ViagensModel viagem, long usuario) {
-        this.id = 0;
         this.viagemId = viagem.getId();
         this.entretenimento = "";
         this.valor = 0;

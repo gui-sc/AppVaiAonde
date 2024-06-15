@@ -67,7 +67,7 @@ public class GastoAereoDAO extends AbstrataDao {
             values.put(GastoAereoModel.COLUNA_CUSTO_PESSOA, gastoAereo.getCusto_pessoa());
             values.put(GastoAereoModel.COLUNA_ALUGUEL_VEICULO, gastoAereo.getAluguel_veiculo());
             values.put(GastoAereoModel.COLUNA_UTILIZADO, gastoAereo.getUtilizado());
-            values.put(GastoAereoModel.COLUNA_VIAGEM_ID, gastoAereo.getViagem().getId());
+            values.put(GastoAereoModel.COLUNA_VIAGEM_ID, gastoAereo.getViagemId());
 
             linhasAfetadas = db.update(
                     GastoAereoModel.TABELA_NOME,

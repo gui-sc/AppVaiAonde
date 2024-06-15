@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.vaiaonde.api.API;
+import com.example.vaiaonde.api.ViagemCallback;
 import com.example.vaiaonde.api.response.Respostas;
 import com.example.vaiaonde.database.dao.GastoGasolinaDAO;
 import com.example.vaiaonde.database.dao.GastoHospedagemDAO;
@@ -34,6 +35,7 @@ public class HostActivity extends AppCompatActivity {
     private EditText txtTotalQuartos, txtTotalNoites, txtCustoPorNoite;
     private TextView txtTotal;
     private ViagensModel viagem;
+    private GastoHospedagemModel gasto;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,24 +48,52 @@ public class HostActivity extends AppCompatActivity {
         txtTotalNoites = findViewById(R.id.txtTotalNoites);
         btnSalvar = findViewById(R.id.btnSalvar);
         DecimalFormat decimalFormat = new DecimalFormat("0.##");
-        long viagemId = getIntent().getLongExtra("travel", 0);
-        if(viagemId == 0) {
+        long id = getIntent().getLongExtra("travel", 0);
+        if(id == 0) {
             startActivity(new Intent(HostActivity.this, MainActivity.class));
             finish();
             return;
         }
 
-        viagem = new ViagensDAO(HostActivity.this).selectById(viagemId);
-        if(viagem == null){
-            startActivity(new Intent(HostActivity.this, MainActivity.class));
-            finish();
-            return;
-        }
-        GastoHospedagemModel gasto = new GastoHospedagemDAO(HostActivity.this).SelectByViagem(viagem);
-        txtCustoPorNoite.setText(String.valueOf(gasto.getCusto_noite()));
-        txtTotalQuartos.setText(String.valueOf(gasto.getQuartos()));
-        txtTotalNoites.setText(String.valueOf(gasto.getNoites()));
-        txtTotal.setText(String.valueOf(gasto.calcularGastoHospedagem()));
+        SweetAlertDialog pDialogSearch = new SweetAlertDialog(HostActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialogSearch.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialogSearch.setTitleText("Aguarde");
+        pDialogSearch.setContentText("Buscando dados do servidor ...");
+        pDialogSearch.setCancelable(false);
+        pDialogSearch.show();
+
+        getViagem(Integer.parseInt(String.valueOf(id)), new ViagemCallback() {
+            @Override
+            public void onSuccess(ViagensModel viagemResponse) {
+                // Acesso seguro ao objeto Viagem
+                viagem = viagemResponse;
+                gasto = viagem.getHospedagem();
+                txtCustoPorNoite.setText(decimalFormat.format(gasto.getCusto_noite()));
+                txtTotalQuartos.setText(String.valueOf(gasto.getQuartos()));
+                txtTotalNoites.setText(String.valueOf(gasto.getNoites()));
+                txtTotal.setText(decimalFormat.format(gasto.calcularGastoHospedagem()));
+                pDialogSearch.dismissWithAnimation();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                pDialogSearch.dismissWithAnimation();
+                new SweetAlertDialog(HostActivity.this, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Erro")
+                        .setContentText("Erro ao buscar dados do banco de dados, tente novamente mais tarde.")
+                        .setContentText("OK")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                startActivity(new Intent(HostActivity.this, MainActivity.class));
+                                finish();
+                            }
+                        })
+                        .show();
+            }
+        });
+
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,6 +226,25 @@ public class HostActivity extends AppCompatActivity {
                                 .show();
                     }
                 });
+            }
+        });
+    }
+    private void getViagem(int id, ViagemCallback callback) {
+        // Chama a API para obter a viagem
+        API.getViagem(id, new Callback<ViagensModel>() {
+            @Override
+            public void onResponse(Call<ViagensModel> call, Response<ViagensModel> response) {
+                if (response != null && response.isSuccessful()) {
+                    ViagensModel viagem = response.body();
+                    callback.onSuccess(viagem); // Chama o callback de sucesso
+                } else {
+                    callback.onFailure(new Exception("Resposta não bem-sucedida"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ViagensModel> call, Throwable t) {
+                callback.onFailure(t); // Chama o callback de falha
             }
         });
     }

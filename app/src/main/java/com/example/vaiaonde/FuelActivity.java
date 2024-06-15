@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.vaiaonde.api.API;
+import com.example.vaiaonde.api.ViagemCallback;
 import com.example.vaiaonde.api.response.Respostas;
 import com.example.vaiaonde.database.dao.GastoGasolinaDAO;
 import com.example.vaiaonde.database.dao.ViagensDAO;
@@ -32,10 +33,7 @@ import retrofit2.Response;
 
 
 public class FuelActivity extends AppCompatActivity {
-    private interface ViagemCallback {
-        void onSuccess(ViagensModel viagem);
-        void onFailure(Throwable t);
-    }
+
     private Button btnVoltar, btnSalvar;
     private EditText txtTotalKm, txtMediaLitro,txtCustoLitro, txtTotalVeiculos;
     private TextView txtTotal;
@@ -60,34 +58,48 @@ public class FuelActivity extends AppCompatActivity {
             finish();
             return;
         }
-        viagem = new ViagensDAO(FuelActivity.this).selectById(id);
-        if(viagem == null){
-            startActivity(new Intent(FuelActivity.this, MainActivity.class));
-            finish();
-            return;
-        }
-        getViagem(Integer.valueOf(String.valueOf(id)), new ViagemCallback() {
+
+        SweetAlertDialog pDialogSearch = new SweetAlertDialog(FuelActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialogSearch.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialogSearch.setTitleText("Aguarde");
+        pDialogSearch.setContentText("Buscando dados do servidor ...");
+        pDialogSearch.setCancelable(false);
+        pDialogSearch.show();
+        DecimalFormat decimalFormat = new DecimalFormat("0.##");
+        getViagem(Integer.parseInt(String.valueOf(id)), new ViagemCallback() {
             @Override
-            public void onSuccess(ViagensModel viagem) {
+            public void onSuccess(ViagensModel viagemResponse) {
                 // Acesso seguro ao objeto Viagem
-                GastoGasolinaModel gasto = viagem.getGasolina();
-                // Atualize a UI ou prossiga com outras operações aqui
-                // ...
+                viagem = viagemResponse;
+                gasto = viagem.getGasolina();
+                txtTotalVeiculos.setText(String.valueOf(gasto.getTotal_veiculos()));
+                txtCustoLitro.setText(decimalFormat.format(gasto.getCusto_litro()));
+                txtTotalKm.setText(String.valueOf(gasto.getKm()));
+                txtMediaLitro.setText(decimalFormat.format(gasto.getKm_litro()));
+                txtTotal.setText(decimalFormat.format(gasto.calcularCustoTotal()));
+                pDialogSearch.dismissWithAnimation();
             }
 
             @Override
             public void onFailure(Throwable t) {
-                // Trate a falha da chamada da API aqui
-                // ...
+                pDialogSearch.dismissWithAnimation();
+                new SweetAlertDialog(FuelActivity.this, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Erro")
+                        .setContentText("Erro ao buscar dados do banco de dados, tente novamente mais tarde.")
+                        .setContentText("OK")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                startActivity(new Intent(FuelActivity.this, MainActivity.class));
+                                finish();
+                            }
+                        })
+                        .show();
             }
         });
 
-        DecimalFormat decimalFormat = new DecimalFormat("0.##");
-        txtTotalVeiculos.setText(String.valueOf(gasto.getTotal_veiculos()));
-        txtCustoLitro.setText(String.valueOf(gasto.getCusto_litro()));
-        txtTotalKm.setText(String.valueOf(gasto.getKm()));
-        txtMediaLitro.setText(String.valueOf(gasto.getKm_litro()));
-        txtTotal.setText(decimalFormat.format(gasto.calcularCustoTotal()));
+
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,9 +188,7 @@ public class FuelActivity extends AppCompatActivity {
                     Toast.makeText(FuelActivity.this, "Todos os valores precisam ser maiores do que 0.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                GastoGasolinaModel newGasto = new GastoGasolinaModel();
                 viagem.setGasolina(gasto);
-                viagem.getGasolina().setId(null);
                 SweetAlertDialog pDialog = new SweetAlertDialog(FuelActivity.this, SweetAlertDialog.PROGRESS_TYPE);
                 pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
                 pDialog.setTitleText("Aguarde");

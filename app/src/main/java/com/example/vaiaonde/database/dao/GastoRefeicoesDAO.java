@@ -58,7 +58,7 @@ public class GastoRefeicoesDAO extends AbstrataDao {
 
             ContentValues values = new ContentValues();
 
-            values.put(GastoRefeicoesModel.COLUNA_VIAGEM_ID, gastoRefeicao.getViagem().getId());
+            values.put(GastoRefeicoesModel.COLUNA_VIAGEM_ID, gastoRefeicao.getViagemId());
             values.put(GastoRefeicoesModel.COLUNA_CUSTO_REFEICAO, gastoRefeicao.getCusto_refeicao());
             values.put(GastoRefeicoesModel.COLUNA_REFEICOES_DIA, gastoRefeicao.getRefeicoes_dia());
             values.put(GastoRefeicoesModel.COLUNA_UTILIZADO, gastoRefeicao.getUtilizado());

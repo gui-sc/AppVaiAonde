@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.vaiaonde.api.API;
+import com.example.vaiaonde.api.ViagemCallback;
 import com.example.vaiaonde.api.response.Respostas;
 import com.example.vaiaonde.database.dao.GastoHospedagemDAO;
 import com.example.vaiaonde.database.dao.UsuariosDAO;
@@ -40,6 +41,7 @@ public class NewTravelActivity extends AppCompatActivity {
     private Button btnSalvar, btnVoltar;
     private TextView lblScreenName;
     private long viagem_id;
+    private ViagensModel viagem, finalViagem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,15 +68,47 @@ public class NewTravelActivity extends AppCompatActivity {
         txtPessoas = findViewById(R.id.txtPessoas);
         txtDestino = findViewById(R.id.txtDestino);
         lblScreenName = findViewById(R.id.lblScreenName);
-        ViagensModel viagem = null;
         if(viagem_id != 0){
-            viagem = new ViagensDAO(NewTravelActivity.this).selectById(viagem_id);
-            txtDestino.setText(viagem.getDestino());
-            txtPessoas.setText(String.valueOf(viagem.getPessoas()));
-            txtDias.setText(String.valueOf(viagem.getDias()));
-            lblScreenName.setText(R.string.editar_viagem);
+            SweetAlertDialog pDialogSearch = new SweetAlertDialog(NewTravelActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+            pDialogSearch.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            pDialogSearch.setTitleText("Aguarde");
+            pDialogSearch.setContentText("Buscando dados do servidor ...");
+            pDialogSearch.setCancelable(false);
+            pDialogSearch.show();
+
+            getViagem(Integer.parseInt(String.valueOf(viagem_id)), new ViagemCallback() {
+                @Override
+                public void onSuccess(ViagensModel viagemResponse) {
+                    // Acesso seguro ao objeto Viagem
+                    viagem = viagemResponse;
+
+                    finalViagem = viagem;
+                    txtDestino.setText(viagem.getDestino());
+                    txtPessoas.setText(String.valueOf(viagem.getPessoas()));
+                    txtDias.setText(String.valueOf(viagem.getDias()));
+                    lblScreenName.setText(R.string.editar_viagem);
+                    pDialogSearch.dismissWithAnimation();
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    pDialogSearch.dismissWithAnimation();
+                    new SweetAlertDialog(NewTravelActivity.this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Erro")
+                            .setContentText("Erro ao buscar dados do banco de dados, tente novamente mais tarde.")
+                            .setContentText("OK")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    startActivity(new Intent(NewTravelActivity.this, MainActivity.class));
+                                    finish();
+                                }
+                            })
+                            .show();
+                }
+            });
         }
-        ViagensModel finalViagem = viagem;
 
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -290,6 +324,26 @@ public class NewTravelActivity extends AppCompatActivity {
             }
         });
     }
+    private void getViagem(int id, ViagemCallback callback) {
+        // Chama a API para obter a viagem
+        API.getViagem(id, new Callback<ViagensModel>() {
+            @Override
+            public void onResponse(Call<ViagensModel> call, Response<ViagensModel> response) {
+                if (response != null && response.isSuccessful()) {
+                    ViagensModel viagem = response.body();
+                    callback.onSuccess(viagem); // Chama o callback de sucesso
+                } else {
+                    callback.onFailure(new Exception("Resposta não bem-sucedida"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ViagensModel> call, Throwable t) {
+                callback.onFailure(t); // Chama o callback de falha
+            }
+        });
+    }
+
     @Override
     public void onBackPressed() {
         if(viagem_id == 0){

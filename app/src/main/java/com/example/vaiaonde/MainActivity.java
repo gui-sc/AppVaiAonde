@@ -2,6 +2,7 @@ package com.example.vaiaonde;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -11,11 +12,14 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.vaiaonde.adapter.TravelAdapter;
+import com.example.vaiaonde.api.ArrayViagemCallback;
 import com.example.vaiaonde.database.dao.ViagensDAO;
 import com.example.vaiaonde.database.model.ViagensModel;
 import com.example.vaiaonde.shared.Shared;
 
 import java.util.ArrayList;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,19 +56,55 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-        //viagens em aberto
         travelListActiveView = findViewById(R.id.viagensPendentes);
-        ArrayList<ViagensModel> travelActiveList = new ViagensDAO(MainActivity.this).SelectAll(usuario_id, true);
-        travelActiveAdapter = new TravelAdapter(MainActivity.this, MainActivity.this);
-        travelActiveAdapter.setItems(travelActiveList);
-        travelListActiveView.setAdapter(travelActiveAdapter);
-
-        //viagens finalizadas
         travelListFinishedView = findViewById(R.id.viagensFinalizadas);
-        ArrayList<ViagensModel> travelFinishedList = new ViagensDAO(MainActivity.this).SelectAll(usuario_id, false);
-        travelFinishedAdapter = new TravelAdapter(MainActivity.this, MainActivity.this);
-        travelFinishedAdapter.setItems(travelFinishedList);
-        travelListFinishedView.setAdapter(travelFinishedAdapter);
+
+        SweetAlertDialog pDialogSearch = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialogSearch.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialogSearch.setTitleText("Aguarde");
+        pDialogSearch.setContentText("Buscando dados do servidor ...");
+        pDialogSearch.setCancelable(false);
+        pDialogSearch.show();
+        //viagens em aberto
+        new ViagensDAO(MainActivity.this).SelectAllApi(usuario_id, true, new ArrayViagemCallback() {
+            @Override
+            public void onSuccess(ArrayList<ViagensModel> viagens) {
+                travelActiveAdapter = new TravelAdapter(MainActivity.this, MainActivity.this);
+                travelActiveAdapter.setItems(viagens);
+                travelListActiveView.setAdapter(travelActiveAdapter);
+                pDialogSearch.dismissWithAnimation();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                pDialogSearch.dismissWithAnimation();
+                new SweetAlertDialog(MainActivity.this, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("ERRO")
+                        .setContentText("Erro ao buscar viagens ativas")
+                        .show();
+            }
+        });
+
+        pDialogSearch.show();
+        //viagens finalizadas
+        new ViagensDAO(MainActivity.this).SelectAllApi(usuario_id, false, new ArrayViagemCallback() {
+            @Override
+            public void onSuccess(ArrayList<ViagensModel> viagens) {
+                travelFinishedAdapter = new TravelAdapter(MainActivity.this, MainActivity.this);
+                travelFinishedAdapter.setItems(viagens);
+                travelListFinishedView.setAdapter(travelFinishedAdapter);
+                pDialogSearch.dismissWithAnimation();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                pDialogSearch.dismissWithAnimation();
+                new SweetAlertDialog(MainActivity.this, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("ERRO")
+                        .setContentText("Erro ao buscar viagens encerradas")
+                        .show();
+            }
+        });
 
     }
 }

@@ -4,6 +4,8 @@ import com.example.vaiaonde.api.endpoint.ViagemEndPoint;
 import com.example.vaiaonde.api.response.Respostas;
 import com.example.vaiaonde.database.model.ViagensModel;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -27,6 +29,12 @@ public class API {
     public static void getViagem(int id, Callback<ViagensModel> callback){
         ViagemEndPoint endPoint = retrofit.create(ViagemEndPoint.class);
         Call<ViagensModel> call = endPoint.getViagem(String.valueOf(id));
+        call.enqueue(callback);
+    }
+
+    public static void listViagem(Callback<ArrayList<ViagensModel>> callback){
+        ViagemEndPoint endPoint = retrofit.create(ViagemEndPoint.class);
+        Call<ArrayList<ViagensModel>> call = endPoint.getViagens("122283");
         call.enqueue(callback);
     }
 
