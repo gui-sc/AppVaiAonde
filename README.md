@@ -18,7 +18,7 @@ EN-US  This is an app for managing travel expenses. The user can add expenses su
 ## Installation
 
 ```bash
-git clone https://github.com/gui-sc/asteriscaIsso.git
+git clone https://github.com/gui-sc/AppVaiAonde.git
 
 First, open the project folder on Android Studio and run the build.
 
